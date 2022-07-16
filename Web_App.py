@@ -67,9 +67,12 @@ with st.sidebar.form(key = "columns in form"):
 st.sidebar.subheader("Impressum")
 st.sidebar.caption("This dashboard is a result of the master thesis of Henrik Pitz. If you like the analysis, you can support me with a donation at the following address. I am working on adding more analysis.")
 
+Front_Page = False
+
 # Anzeigen der Startseite, wenn keiner der Checkboxen auf der linken Seite ausgewählt sind
 if unweighted == False and marketcap_weighted == False and volume_sold == False and dataset_analysis == False and gini_coef == False:
     
+    Front_Page = True
     st.subheader("Aufbau des Tools:")
     st.write("Welcome Page, wenn nichts angeklicjt wird, mit Erklärung was gemacht wurde und was das Tool kann")
     st.write("1. Reiter links: Ergebnisse & Zusammenfassung des Papers")
@@ -1017,10 +1020,11 @@ if unweighted == False and marketcap_weighted == False and volume_sold == False 
         pepes_list = unique_values.tolist()
         official_rare_pepes = pepes_list
 
-        # Showing used Rare Pepes in the analysis
-        d1, d2 = st.columns((2, 2))
-        d1.write("Used Rare Pepes: " + str(len(unique_values)))
-        st.markdown("<hr/>", unsafe_allow_html=True)
+        if Front_Page == False:
+             # Showing used Rare Pepes in the analysis
+             d1, d2 = st.columns((2, 2))
+             d1.write("Used Rare Pepes: " + str(len(unique_values)))
+             st.markdown("<hr/>", unsafe_allow_html=True)
 
         # Saving dataframe as csv
         name_dataframe = "df_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
