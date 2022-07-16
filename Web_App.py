@@ -70,11 +70,12 @@ st.sidebar.caption("This dashboard is a result of the master thesis of Henrik Pi
 # Anzeigen der Startseite, wenn keiner der Checkboxen auf der linken Seite ausgewählt sind
 if unweighted == False and marketcap_weighted == False and volume_sold == False and dataset_analysis == False and gini_coef == False:
     
-    st.subheader("Aufbau des Tools:")
-    st.write("Welcome Page, wenn nichts angeklicjt wird, mit Erklärung was gemacht wurde und was das Tool kann")
-    st.write("1. Reiter links: Ergebnisse & Zusammenfassung des Papers")
-    st.write("2. Reiter links: Die Analysen Links")
-    st.write("3. Reiter links: Anfragen ")
+    st.subheader("Landing Page:")
+    st.write("Welcome to the world's first Rare Pepe analysis tool.")
+    st.write("The following functions are supported....")
+    st.write("These have been made possible as follows...")
+    st.write("If you have any comments or wishes, please contact us...")
+    st.subheader("Have fun in the world of Rare Pepes!")
 
 #############################################################
 # Current prices Cryptocurrencies
