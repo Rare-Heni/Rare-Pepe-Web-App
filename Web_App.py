@@ -79,6 +79,14 @@ if unweighted == False and marketcap_weighted == False and volume_sold == False 
     st.subheader("Have fun in the world of Rare Pepes!")
     st.markdown("<hr/>", unsafe_allow_html=True)
 
+    st.subheader("Abstract of the Paper")
+    st.write("........")
+    st.write("........")
+    st.write("........")
+    st.write("........")
+    st.markdown("<hr/>", unsafe_allow_html=True)
+             
+
 else:
     #############################################################
     # Current prices Cryptocurrencies
