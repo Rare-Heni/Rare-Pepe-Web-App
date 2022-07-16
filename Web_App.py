@@ -117,7 +117,6 @@ if unweighted == False and marketcap_weighted == False and volume_sold == False 
     load_month = file_contents
     begin_time = datetime.now()
     current_month = begin_time.strftime("%Y-%m")
-else:
 
      # Import of all Rare Pepes
      df_all_pepes = pd.read_csv ("02_input_data/01_all_information_pepes.csv")
