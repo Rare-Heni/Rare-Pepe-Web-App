@@ -70,6 +70,7 @@ st.sidebar.caption("This dashboard is a result of the master thesis of Henrik Pi
 # Anzeigen der Startseite, wenn keiner der Checkboxen auf der linken Seite ausgewählt sind
 if unweighted == False and marketcap_weighted == False and volume_sold == False and dataset_analysis == False and gini_coef == False:
     
+    st.markdown("<hr/>", unsafe_allow_html=True)
     st.subheader("Welcome to the first Rare Pepe Analysis Tool in the world.")
     st.write("This tool was created as part of a master thesis by Henrik Pitz to simplify the collection and investment of Rare Pepes.")
     st.write("For this purpose a Rare Pepe Index was developed, which shows the performance over the whole collection.")
