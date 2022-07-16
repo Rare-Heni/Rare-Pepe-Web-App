@@ -70,12 +70,11 @@ st.sidebar.caption("This dashboard is a result of the master thesis of Henrik Pi
 # Anzeigen der Startseite, wenn keiner der Checkboxen auf der linken Seite ausgewählt sind
 if unweighted == False and marketcap_weighted == False and volume_sold == False and dataset_analysis == False and gini_coef == False:
     
-    st.subheader("Aufbau des Tools:")
-    st.write("Welcome to the first Rare Pepe Analysis Tool in the world.")
-    st.write("This tool was created as part of a master thesis by Henrik Pitz to simplify the collection and investment of Rare Pepes.")
-    st.write("For this purpose a Rare Pepe Index was developed, which shows the performance over the whole collection.")
-    st.write("With this tool it is possible to track the current performance of the collection and to buy Rare Pepes based on that.")
-    st.write("In addition, further analyses such as the gini coefficient and the transaction volume in USD are displayed and a comparison with other indices is made possible.")
+    st.subheader("Welcome to the first Rare Pepe Analysis Tool in the world.")
+    st.subheader("This tool was created as part of a master thesis by Henrik Pitz to simplify the collection and investment of Rare Pepes.")
+    st.subheader("For this purpose a Rare Pepe Index was developed, which shows the performance over the whole collection.")
+    st.subheader("With this tool it is possible to track the current performance of the collection and to buy Rare Pepes based on that.")
+    st.subheader("In addition, further analyses such as the gini coefficient and the transaction volume in USD are displayed and a comparison with other indices is made possible.")
     st.subheader("Have fun in the world of Rare Pepes!")
 
 else:
