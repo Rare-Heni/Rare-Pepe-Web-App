@@ -76,6 +76,7 @@ if unweighted == False and marketcap_weighted == False and volume_sold == False 
     st.write("With this tool it is possible to track the current performance of the collection and to buy Rare Pepes based on that.")
     st.write("In addition, further analyses such as the gini coefficient and the transaction volume in USD are displayed and a comparison with other indices is made possible.")
     st.subheader("Have fun in the world of Rare Pepes!")
+    st.markdown("<hr/>", unsafe_allow_html=True)
 
 else:
     #############################################################
