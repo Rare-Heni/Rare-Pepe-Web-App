@@ -78,45 +78,45 @@ if unweighted == False and marketcap_weighted == False and volume_sold == False 
     st.subheader("Have fun in the world of Rare Pepes!")
 
 
-     #############################################################
-     # Current prices Cryptocurrencies
-     #############################################################
+    #############################################################
+    # Current prices Cryptocurrencies
+    #############################################################
 
-     # Information for the Xchain API to get bitcoin and xcp price
-     url = "https://xchain.io/api/network"
-     headers = {'content-type': 'application/json'}
-     auth = HTTPBasicAuth('rpc', '1234')
+    # Information for the Xchain API to get bitcoin and xcp price
+    url = "https://xchain.io/api/network"
+    headers = {'content-type': 'application/json'}
+    auth = HTTPBasicAuth('rpc', '1234')
 
-     # Save the output as JSON output to work with it
-     response= requests.post(url, headers=headers, auth=auth)
-     response = response.json()
+    # Save the output as JSON output to work with it
+    response= requests.post(url, headers=headers, auth=auth)
+    response = response.json()
 
-     # Reading bitcoin and xcp
-     bitcoin_price = float(response["currency_info"][0]["price_usd"])
-     xcp_price = float(response["currency_info"][1]["price_usd"])
+    # Reading bitcoin and xcp
+    bitcoin_price = float(response["currency_info"][0]["price_usd"])
+    xcp_price = float(response["currency_info"][1]["price_usd"])
 
-     # Information for the Xchain API to get pepecash price
-     url = "https://xchain.io/api/asset/PEPECASH"
-     headers = {'content-type': 'application/json'}
-     auth = HTTPBasicAuth('rpc', '1234')
+    # Information for the Xchain API to get pepecash price
+    url = "https://xchain.io/api/asset/PEPECASH"
+    headers = {'content-type': 'application/json'}
+    auth = HTTPBasicAuth('rpc', '1234')
+     
+    # Save the output as JSON output to work with it
+    response= requests.post(url, headers=headers, auth=auth)
+    response = response.json()
 
-     # Save the output as JSON output to work with it
-     response= requests.post(url, headers=headers, auth=auth)
-     response = response.json()
+    # Reading xcp price and converting it to dollar
+    pepecash_price = float(response["estimated_value"]["xcp"])*xcp_price
 
-     # Reading xcp price and converting it to dollar
-     pepecash_price = float(response["estimated_value"]["xcp"])*xcp_price
+    #############################################################
+    # Import of the relevant data
+    #############################################################
 
-     #############################################################
-     # Import of the relevant data
-     #############################################################
-
-     # Test if the data is already up to date
-     f = open( "00_requirements/Load_Month.txt", 'r' )
-     file_contents = f.read()
-     load_month = file_contents
-     begin_time = datetime.now()
-     current_month = begin_time.strftime("%Y-%m")
+    # Test if the data is already up to date
+    f = open( "00_requirements/Load_Month.txt", 'r' )
+    file_contents = f.read()
+    load_month = file_contents
+    begin_time = datetime.now()
+    current_month = begin_time.strftime("%Y-%m")
 else:
 
      # Import of all Rare Pepes
