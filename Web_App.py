@@ -1532,7 +1532,7 @@ else:
         # Show graph Rare Pepe
         name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
         price = Image.open("04_graphs/" + name_dataframe)
-        i1.markdown("Rare Pepe Market Cap Time Series:")
+        i1.markdown("Rare Pepe Time Series:")
         i1.image(price)
         st.markdown("<hr/>", unsafe_allow_html=True)
             
@@ -1562,7 +1562,7 @@ else:
         # Show graph Rare Pepe
         name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
         price = Image.open("04_graphs/" + name_dataframe)
-        j1.markdown("Rare Pepe Market Cap Time Series:")
+        j1.markdown("Rare Pepe Time Series:")
         j1.image(price)
         st.markdown("<hr/>", unsafe_allow_html=True)
 
@@ -1591,7 +1591,7 @@ else:
         # Show graph Rare Pepe
         name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
         price = Image.open("04_graphs/" + name_dataframe)
-        k1.markdown("Rare Pepe Market Cap Time Series:")
+        k1.markdown("Rare Pepe Time Series:")
         k1.image(price)
         st.markdown("<hr/>", unsafe_allow_html=True)
 
@@ -1620,7 +1620,7 @@ else:
         # Show graph Rare Pepe
         name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
         price = Image.open("04_graphs/" + name_dataframe)
-        l1.markdown("Rare Pepe Market Cap Time Series:")
+        l1.markdown("Rare Pepe Time Series:")
         l1.image(price)
         st.markdown("<hr/>", unsafe_allow_html=True)
 
