@@ -1118,6 +1118,7 @@ else:
         # if yes show results
         if path.is_file() == True:
             df = pd.read_csv("03_output_data/" + name_dataframe)
+            df = df[['Date_Index','Price_Level']]
             e1.markdown("Data:")
             e1.dataframe(df)
 
@@ -1146,9 +1147,9 @@ else:
             
             # Show dataframe
             df = pd.read_csv("03_output_data/" + name_dataframe)
-            df_test = df[['Date_Index','Price_Level']]
+            df = df[['Date_Index','Price_Level']]
             e1.markdown("Data:")
-            e1.dataframe(df_test)
+            e1.dataframe(df)
             
             # show graph
             e2.markdown("Graph:")
@@ -1181,6 +1182,7 @@ else:
         # if yes show results
         if path.is_file() == True:
             df = pd.read_csv("03_output_data/" + name_dataframe)
+            df = df[['Date_Index','Price_Level']]
             f1.markdown("Data:")
             f1.dataframe(df)
 
@@ -1247,9 +1249,9 @@ else:
 
             # show dataframe
             df = pd.read_csv("03_output_data/" + name_dataframe)
-            df_test = df[['Date_Index','Price_Level']]
+            df = df[['Date_Index','Price_Level']]
             f1.markdown("Data:")
-            f1.dataframe(df_test)
+            f1.dataframe(df)
         
             # show graph
             f2.markdown("Graph:")
@@ -1283,6 +1285,7 @@ else:
 
             # show dataframe
             g1.markdown("Individual Gini-Coefficient:")
+            df_gini_list = df_gini_list[['Name','gini']]
             g1.dataframe(df_gini_list)
             total_gini = df_gini_list["gini"].mean()
             total_gini = round(total_gini, 3)      
@@ -1384,6 +1387,7 @@ else:
 
             # Show dataframe of Gini Coefficients
             g1.markdown("Individual Gini-Coefficient:")
+            df_gini_list = df_gini_list[['Name','gini']]
             g1.dataframe(df_gini_list)
             total_gini = df_gini_list["gini"].mean()
             total_gini = round(total_gini, 3)        
@@ -1427,9 +1431,9 @@ else:
         # If yes show results
         if path.is_file() == True:
             df = pd.read_csv("03_output_data/" + name_dataframe)
-            df_test = df[['Date','Volume sold']]
+            df = df[['Date','Volume sold']]
             h1.markdown("Data:")
-            h1.dataframe(df_test)
+            h1.dataframe(df)
 
             name_dataframe = "png_volume_sold_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
             price = Image.open("04_graphs/" + name_dataframe)
