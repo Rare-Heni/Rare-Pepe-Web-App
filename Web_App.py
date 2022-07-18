@@ -1162,7 +1162,18 @@ else:
             plt.close()
             price = Image.open("04_graphs/" + name_dataframe)
             e2.image(price)
-        st.markdown("<hr/>", unsafe_allow_html=True)     
+               
+            # cumulative price index
+            df_cum = df_test
+            df_cum['Price_Level'] = df_cum['Price_Level'].div(df_cum['Price_Level'].iat[0])
+            
+            df_cum["time"] = pd.to_datetime(df_cum["Date_Index"])
+            df_cum.plot(x ='time', y='Price_Level', kind = 'line')
+            
+            name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
+            plt.savefig("04_graphs/" + name_dataframe)
+            
+        st.markdown("<hr/>", unsafe_allow_html=True)   
 
     #############################################################
     # Calculation of the market weighted price index
@@ -1505,6 +1516,7 @@ else:
         # Import Bitcoin data
         df = pd.read_csv("02_input_data/" + "_bitcoin-usd.csv")
         df_test = df[['timestamp','close']]
+        df_test['close'] = df_test['close'].div(df_test['close'].iat[0])
         df_test["time"] = pd.to_datetime(df_test["timestamp"],unit='s')
         df_test.rename(columns={"close":"Price in USD"},inplace=True)
 
@@ -1518,11 +1530,12 @@ else:
         i2.image(test)
 
         # Show graph Rare Pepe
-        name_dataframe = "png_market_cap_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
+        name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
         price = Image.open("04_graphs/" + name_dataframe)
         i1.markdown("Rare Pepe Market Cap Time Series:")
         i1.image(price)
         st.markdown("<hr/>", unsafe_allow_html=True)
+            
 
     if xcp_index == True:
 
@@ -1533,6 +1546,7 @@ else:
         # Import XCP data
         df = pd.read_csv("02_input_data/" + "_xcp-usd.csv")
         df_test = df[['timestamp','close']]
+        df_test['close'] = df_test['close'].div(df_test['close'].iat[0])
         df_test["time"] = pd.to_datetime(df_test["timestamp"],unit='s')
         df_test.rename(columns={"close":"Price in USD"},inplace=True)
 
@@ -1546,7 +1560,7 @@ else:
         j2.image(price)
 
         # Show graph Rare Pepe
-        name_dataframe = "png_market_cap_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
+        name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
         price = Image.open("04_graphs/" + name_dataframe)
         j1.markdown("Rare Pepe Market Cap Time Series:")
         j1.image(price)
@@ -1561,6 +1575,7 @@ else:
         # Import Pepe Cash data
         df = pd.read_csv("02_input_data/" + "_pepecash-usd.csv")
         df_test = df[['timestamp','close']]
+        df_test['close'] = df_test['close'].div(df_test['close'].iat[0])
         df_test["time"] = pd.to_datetime(df_test["timestamp"],unit='s')
         df_test.rename(columns={"close":"Price in USD"},inplace=True)
 
@@ -1574,7 +1589,7 @@ else:
         k2.image(price)
 
         # Show graph Rare Pepe
-        name_dataframe = "png_market_cap_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
+        name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
         price = Image.open("04_graphs/" + name_dataframe)
         k1.markdown("Rare Pepe Market Cap Time Series:")
         k1.image(price)
@@ -1589,6 +1604,7 @@ else:
         # Import NASDAQ data
         df = pd.read_csv("02_input_data/" + "_nasdaq.csv")
         df_test = df[['timestamp','close']]
+        df_test['close'] = df_test['close'].div(df_test['close'].iat[0])
         df_test["time"] = pd.to_datetime(df_test["timestamp"],unit='s')
         df_test.rename(columns={"close":"Price in USD"},inplace=True)
 
@@ -1602,7 +1618,7 @@ else:
         l2.image(price)
 
         # Show graph Rare Pepe
-        name_dataframe = "png_market_cap_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
+        name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
         price = Image.open("04_graphs/" + name_dataframe)
         l1.markdown("Rare Pepe Market Cap Time Series:")
         l1.image(price)
