@@ -69,20 +69,19 @@ if unweighted == False and marketcap_weighted == False and volume_sold == False 
     
     # Introduction
     st.markdown("<hr/>", unsafe_allow_html=True)
-    st.subheader("Welcome to the first Rare Pepe Analysis Tool in the world.")
-    st.text("This tool was created as part of a master thesis by Henrik Pitz to simplify the collection and investment of Rare Pepes.")
-    st.text("For this purpose a Rare Pepe Index was developed, which shows the performance over the whole collection.")
-    st.text("With this tool it is possible to track the current performance of the collection and to buy Rare Pepes based on that.")
-    st.text("In addition, further analyses such as the gini coefficient and the transaction volume in USD are displayed and a comparison with other indices is made possible.")
+    st.markdown("<h1 style='text-align: left; color: green;font-size:30px;'>Welcome to the first Rare Pepe Analysis Tool in the world.</h1>", unsafe_allow_html=True)
+    st.write("This tool was created as part of a master thesis by Henrik Pitz to simplify the collection and investment of Rare Pepes.")
+    st.write("For this purpose a Rare Pepe Index was developed, which shows the performance over the whole collection.")
+    st.write("With this tool it is possible to track the current performance of the collection and to buy Rare Pepes based on that.")
+    st.write("In addition, further analyses such as the gini coefficient and the transaction volume in USD are displayed and a comparison with other indices is made possible.")
+    
     st.subheader("Have fun in the world of Rare Pepes!")
     st.markdown("<hr/>", unsafe_allow_html=True)
 
     # Abstract of the Paper
     st.markdown("<h1 style='text-align: left; color: green;font-size:30px;'>Abstract of the Paper:</h1>", unsafe_allow_html=True)
-    st.write("........")
-    st.write("........")
-    st.write("........")
-    st.write("........")
+    st.write("Since 2021, NFTs have experienced tremendous hype in society. This paper analyzes this hype using the Rare Pepes Collection to gain a better understanding of NFT markets and its pricing. For this purpose, one of the largest NFT data sets of a collection is created and made available to the general public using an open source web tool. Based on this, a price index is created using the hedonic regression methodolgy and the question of how the performance of the Rare Pepes Collection compares to other assets is answered. The results of this analysis show that the Rare Pepes Collection has generated above average returns since release, outperforming the compared indices, while maintaining a relatively low correlation. The above-average returns come with higher risk and volatility. Using fixed effects regression, the driving factors of the price formation of a rare pepe were also identified. The results show that supply, distribution, quantity and aesthetic attributes have an influence on the price formation. Surprisingly, Burns do not have a significant effect on price, which is especially important for investors. The magnitude of the effects suggests that price formation is currently still inefficient. The results of this paper thus provide insightful findings for understanding the NFT market and, together with the web tool, provide opportunities for further research.")
+    
     st.markdown("<hr/>", unsafe_allow_html=True)
     
     # Useful links in the Rare Pepe World
@@ -99,8 +98,7 @@ if unweighted == False and marketcap_weighted == False and volume_sold == False 
     
     # Note Thesis Time
     st.markdown("<h1 style='text-align: center; color: grey;font-size:12px;'>Note: For the master thesis evaluation, the data of the tool will not be updated. Next update 01 October.</h1>", unsafe_allow_html=True)
-
-             
+     
 
 else:
     #############################################################
