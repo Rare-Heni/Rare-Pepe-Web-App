@@ -30,10 +30,7 @@ st.sidebar.image(pepe)
 c1, c2 = st.columns((2, 2))
 
 # Defining header of the page
-def header(content):
-     c1.markdown(f'<p style="background-color:#ffffff;color:#011839;font-size:40px;border-radius:2%;">{content}</p>', unsafe_allow_html=True)
-     c2.markdown(f'<p style="background-color:#ffffff;color:#ffffff;font-size:40px;border-radius:2%;">{content}</p>', unsafe_allow_html=True)
-header("Rare Pepe Scientific Analysis Tool")
+st.markdown("<h1 style='text-align: center; color: green;'>Rare Pepe Scientific Analysis Tool</h1>", unsafe_allow_html=True)
 
 # Defining sidebar of the page
 with st.sidebar.form(key = "columns in form"):
@@ -70,21 +67,39 @@ st.sidebar.caption("This dashboard is a result of the master thesis of Henrik Pi
 # Anzeigen der Startseite, wenn keiner der Checkboxen auf der linken Seite ausgewählt sind
 if unweighted == False and marketcap_weighted == False and volume_sold == False and dataset_analysis == False and gini_coef == False:
     
+    # Introduction
     st.markdown("<hr/>", unsafe_allow_html=True)
     st.subheader("Welcome to the first Rare Pepe Analysis Tool in the world.")
-    st.write("This tool was created as part of a master thesis by Henrik Pitz to simplify the collection and investment of Rare Pepes.")
-    st.write("For this purpose a Rare Pepe Index was developed, which shows the performance over the whole collection.")
-    st.write("With this tool it is possible to track the current performance of the collection and to buy Rare Pepes based on that.")
-    st.write("In addition, further analyses such as the gini coefficient and the transaction volume in USD are displayed and a comparison with other indices is made possible.")
+    st.text("This tool was created as part of a master thesis by Henrik Pitz to simplify the collection and investment of Rare Pepes.")
+    st.text("For this purpose a Rare Pepe Index was developed, which shows the performance over the whole collection.")
+    st.text("With this tool it is possible to track the current performance of the collection and to buy Rare Pepes based on that.")
+    st.text("In addition, further analyses such as the gini coefficient and the transaction volume in USD are displayed and a comparison with other indices is made possible.")
     st.subheader("Have fun in the world of Rare Pepes!")
     st.markdown("<hr/>", unsafe_allow_html=True)
 
-    st.subheader("Abstract of the Paper")
+    # Abstract of the Paper
+    st.markdown("<h1 style='text-align: left; color: green;font-size:30px;'>Abstract of the Paper:</h1>", unsafe_allow_html=True)
     st.write("........")
     st.write("........")
     st.write("........")
     st.write("........")
     st.markdown("<hr/>", unsafe_allow_html=True)
+    
+    # Useful links in the Rare Pepe World
+    st.markdown("<h1 style='text-align: left; color: green;font-size:30px;'>Useful Links to the Rare Pepe World:</h1>", unsafe_allow_html=True)
+    st.write("Explorer to see all transactions and assets: [https://xchain.io](https://xchain.io)")
+    st.write("Free open-source wallet for bitcoins and Counterparty to trade and store assets: [https://freewallet.io](https://freewallet.io)")
+    st.write("Telegram Groupe for traders and collectors: [https://telegram.me/pepetraders](https://telegram.me/pepetraders)")
+    st.write("Rare Pepe Directory: [http://rarepepedirectory.com](http://rarepepedirectory.com)")
+    st.write("Pepe.WTF: [https://pepe.wtf](https://pepe.wtf)")
+    st.write("RarePepes.com: [https://rarepepes.com](https://rarepepes.com)")
+    
+
+    st.markdown("<hr/>", unsafe_allow_html=True)
+    
+    # Note Thesis Time
+    st.markdown("<h1 style='text-align: center; color: grey;font-size:12px;'>Note: For the master thesis evaluation, the data of the tool will not be updated. Next update 01 October.</h1>", unsafe_allow_html=True)
+
              
 
 else:
