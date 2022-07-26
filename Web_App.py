@@ -69,7 +69,7 @@ if unweighted == False and marketcap_weighted == False and volume_sold == False 
     
     # Introduction
     st.markdown("<hr/>", unsafe_allow_html=True)
-    st.markdown("<h1 style='text-align: left; color: green;font-size:30px;'>Welcome to the first Rare Pepe Analysis Tool in the world.</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: left; color: green;font-size:30px;'>Welcome to my Rare Pepe Analysis Tool.</h1>", unsafe_allow_html=True)
     st.write("This tool was created as part of a master thesis by Henrik Pitz to simplify collecting and investing in Rare Pepes.")
     st.write("For this purpose a Rare Pepe Index was developed, which shows the performance over the whole collection.")
     st.write("With that you can track the current performance of the collection and buy Rare Pepes based on the information.")
