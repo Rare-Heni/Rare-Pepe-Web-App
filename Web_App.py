@@ -1538,9 +1538,9 @@ else:
         plt.savefig("04_graphs/" + '_bitcoin_time_series.png')
 
         # Show graph Bitcoin
-        test = Image.open("04_graphs/" + '_bitcoin_time_series.png')
+        price = Image.open("04_graphs/" + '_bitcoin_time_series.png')
         i2.markdown("Bitcoin Time Series:")
-        i2.image(test)
+        i2.image(price, width=670)
 
         # Show graph Rare Pepe
         name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
@@ -1570,7 +1570,7 @@ else:
         # Show graph XCP
         price = Image.open("04_graphs/" + '_xcp_time_series.png')
         j2.markdown("XCP Time Series:")
-        j2.image(price)
+        j2.image(price, width=670)
 
         # Show graph Rare Pepe
         name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
@@ -1596,10 +1596,10 @@ else:
         df_test.plot(x ='time', y='Price in USD', kind = 'line')
         plt.savefig("04_graphs/" + '_pepecash_time_series.png')
 
-        # Show graph XCP
+        # Show graph Pepe Cash
         price = Image.open("04_graphs/" + '_pepecash_time_series.png')
         k2.markdown("Pepecash Time Series:")
-        k2.image(price)
+        k2.image(price, width=670)
 
         # Show graph Rare Pepe
         name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
@@ -1628,7 +1628,7 @@ else:
         # Show graph NASDDAQ
         price = Image.open("04_graphs/" + '_nasdaq_time_series.png')
         l2.markdown("NASDAQ Time Series:")
-        l2.image(price)
+        l2.image(price, width=670)
 
         # Show graph Rare Pepe
         name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
