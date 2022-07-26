@@ -1133,7 +1133,7 @@ else:
             df = pd.read_csv("03_output_data/" + name_dataframe)
             df = df[['Date_Index','Price_Level']]
             e1.markdown("Data:")
-            e1.dataframe(df)
+            e1.dataframe(df, height=500)
 
             name_dataframe = "png_df_unweighted_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
             price = Image.open("04_graphs/" + name_dataframe)
@@ -1162,7 +1162,7 @@ else:
             df = pd.read_csv("03_output_data/" + name_dataframe)
             df = df[['Date_Index','Price_Level']]
             e1.markdown("Data:")
-            e1.dataframe(df)
+            e1.dataframe(df, height=500)
             
             # show graph
             e2.markdown("Graph:")
@@ -1208,7 +1208,7 @@ else:
             df = pd.read_csv("03_output_data/" + name_dataframe)
             df = df[['Date_Index','Price_Level']]
             f1.markdown("Data:")
-            f1.dataframe(df)
+            f1.dataframe(df, height=500)
 
             name_dataframe = "png_market_cap_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
             price = Image.open("04_graphs/" + name_dataframe)
@@ -1275,7 +1275,7 @@ else:
             df = pd.read_csv("03_output_data/" + name_dataframe)
             df = df[['Date_Index','Price_Level']]
             f1.markdown("Data:")
-            f1.dataframe(df)
+            f1.dataframe(df, height=500)
         
             # show graph
             f2.markdown("Graph:")
@@ -1502,7 +1502,7 @@ else:
             df = pd.read_csv("03_output_data/" + name_dataframe)
             df_test = df[['Date','Volume sold']]
             h1.markdown("Data:")
-            h1.dataframe(df_test)
+            h1.dataframe(df_test, height=500)
 
             # Show graph
             h2.markdown("Graph:")
