@@ -86,7 +86,10 @@ if unweighted == False and marketcap_weighted == False and volume_sold == False 
     # Useful links in the Rare Pepe World
     st.markdown("<h1 style='text-align: left; color: green;font-size:30px;'>Useful Links to the Rare Pepe World:</h1>", unsafe_allow_html=True)
     st.write("Explorer to see all transactions and assets: [https://xchain.io](https://xchain.io)")
+    st.write("Official Rare Pepe Wallet: [https://rarepepewallet.com](https://rarepepewallet.com)")
     st.write("Free open-source wallet for bitcoins and Counterparty to trade and store assets: [https://freewallet.io](https://freewallet.io)")
+    st.write("Alternative Marketplace to buy Rare Pepes: [https://scarce.city](https://scarce.city)")
+    st.write("Marketplace to buy Rare Pepes on Ethereum: [https://opensea.io](https://opensea.io)")
     st.write("Telegram Groupe for traders and collectors: [https://telegram.me/pepetraders](https://telegram.me/pepetraders)")
     st.write("Rare Pepe Directory: [http://rarepepedirectory.com](http://rarepepedirectory.com)")
     st.write("Pepe.WTF: [https://pepe.wtf](https://pepe.wtf)")
