@@ -1457,7 +1457,7 @@ else:
             df = pd.read_csv("03_output_data/" + name_dataframe)
             df = df[['Date','Volume sold']]
             h1.markdown("Data:")
-            h1.dataframe(df)
+            h1.dataframe(df, height=500)
 
             name_dataframe = "png_volume_sold_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
             price = Image.open("04_graphs/" + name_dataframe)
