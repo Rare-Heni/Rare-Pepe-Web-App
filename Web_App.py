@@ -1545,13 +1545,13 @@ else:
 
         # Show graph Bitcoin
         price = Image.open("04_graphs/" + '_bitcoin_time_series.png')
-        i2.markdown("<h1 style='text-align: center; color: green;font-size:15px;'>Performance of Bitcoin</h1>", unsafe_allow_html=True)
+        i2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Bitcoin</h1>", unsafe_allow_html=True)
         i2.image(price, width=670)
 
         # Show graph Rare Pepe
         name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
         price = Image.open("04_graphs/" + name_dataframe)
-        i1.markdown("<h1 style='text-align: center; color: green;font-size:15px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
+        i1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
         i1.image(price)
         st.markdown("<hr/>", unsafe_allow_html=True)
             
