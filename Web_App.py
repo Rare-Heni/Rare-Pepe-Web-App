@@ -1660,13 +1660,13 @@ else:
             df_total_time = df_total
 
         # Show total transactions
-        st.subheader("Dataset: ")
-        st.write("Transaction: " + str(len(df_total_time)))
+        st.subheader("Dataset ")
+        st.write("Number of Transactions in the Analysis " + str(len(df_total_time)))
         st.dataframe(df_total_time)
         st.markdown("<hr/>", unsafe_allow_html=True)
 
     # Execution Time
-    st.subheader("Metadata:")
+    st.text("Metadata:")
     end_time = datetime.now()
     execution_time = end_time - begin_time
     st.caption("Runtime: " + str(execution_time))
