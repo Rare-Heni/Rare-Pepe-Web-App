@@ -1212,12 +1212,12 @@ else:
         if path.is_file() == True:
             df = pd.read_csv("03_output_data/" + name_dataframe)
             df = df[['Date_Index','Price_Level']]
-            f1.markdown("Data:")
+            f1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset</h1>", unsafe_allow_html=True)
             f1.dataframe(df, height=500)
 
             name_dataframe = "png_market_cap_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
             price = Image.open("04_graphs/" + name_dataframe)
-            f2.markdown("Graph:")
+            f2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of the Market Weighted Rare Pepe Index</h1>", unsafe_allow_html=True)
             f2.image(price)
             
         # Creation of the market weighted price index dataset and graph    
@@ -1279,11 +1279,11 @@ else:
             # show dataframe
             df = pd.read_csv("03_output_data/" + name_dataframe)
             df = df[['Date_Index','Price_Level']]
-            f1.markdown("Data:")
+            f1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset</h1>", unsafe_allow_html=True)
             f1.dataframe(df, height=500)
         
             # show graph
-            f2.markdown("Graph:")
+            f2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of the Market Weighted Rare Pepe Index</h1>", unsafe_allow_html=True)
             df_test["time"] = pd.to_datetime(df_test["Date_Index"])
             df_test.plot(x ='time', y='Price_Level', kind = 'line')
 
