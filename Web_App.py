@@ -41,6 +41,7 @@ with st.sidebar.form(key = "columns in form"):
     marketcap_weighted = st.checkbox("Market-Cap Weighted Price Index")
     gini_coef = st.checkbox("Gini-Coefficient")
     volume_sold = st.checkbox("Volume Sold")
+    benchmark = st.checkbox("Benchmark")
     dataset_analysis = st.checkbox("Dataset")
     
     # Defining checkboxes for filters
@@ -65,7 +66,7 @@ st.sidebar.subheader("Impressum")
 st.sidebar.caption("This dashboard is a result of the master thesis of Henrik Pitz. If you like the analysis, you can support me with a donation at: 1HKuL7ecSsExU3KAU7qVtVLusUgt7DYHo6. I am working on adding more analysis.")
 
 # Anzeigen der Startseite, wenn keiner der Checkboxen auf der linken Seite ausgewählt sind
-if unweighted == False and marketcap_weighted == False and volume_sold == False and dataset_analysis == False and gini_coef == False:
+if unweighted == False and marketcap_weighted == False and volume_sold == False and dataset_analysis == False and gini_coef == False and benchmark == False:
     
     # Introduction
     st.markdown("<hr/>", unsafe_allow_html=True)
@@ -1524,128 +1525,130 @@ else:
 
     #############################################################
     # Comparison with indices
-    ############################################################# 
+    #############################################################
+    
+    if benchmark == True:
 
-    if bitcoin_index == True:
+        if bitcoin_index == True:
 
-        bi1, bi2 = st.columns((2, 3)) 
-        bi1.subheader("Benchmark Rare Pepe Index - Bitcoin")
-        bi1.write("(Cumulative performance with 1 USD Dollar Investment)")
-        i1, i2 = st.columns((2, 2))
+            bi1, bi2 = st.columns((2, 3)) 
+            bi1.subheader("Benchmark Rare Pepe Index - Bitcoin")
+            bi1.write("(Cumulative performance with 1 USD Dollar Investment)")
+            i1, i2 = st.columns((2, 2))
 
-        # Import Bitcoin data
-        df = pd.read_csv("02_input_data/" + "_bitcoin-usd.csv")
-        df_test = df[['timestamp','close']]
-        df_test['close'] = df_test['close'].div(df_test['close'].iat[0])
-        df_test["time"] = pd.to_datetime(df_test["timestamp"],unit='s')
-        df_test.rename(columns={"close":"Price in USD"},inplace=True)
+            # Import Bitcoin data
+            df = pd.read_csv("02_input_data/" + "_bitcoin-usd.csv")
+            df_test = df[['timestamp','close']]
+            df_test['close'] = df_test['close'].div(df_test['close'].iat[0])
+            df_test["time"] = pd.to_datetime(df_test["timestamp"],unit='s')
+            df_test.rename(columns={"close":"Price in USD"},inplace=True)
 
-        # Create graph
-        df_test.plot(x ='time', y='Price in USD', kind = 'line')
-        plt.savefig("04_graphs/" + '_bitcoin_time_series.png')
+            # Create graph
+            df_test.plot(x ='time', y='Price in USD', kind = 'line')
+            plt.savefig("04_graphs/" + '_bitcoin_time_series.png')
 
-        # Show graph Bitcoin
-        price = Image.open("04_graphs/" + '_bitcoin_time_series.png')
-        i2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Bitcoin</h1>", unsafe_allow_html=True)
-        i2.image(price, width=670)
+            # Show graph Bitcoin
+            price = Image.open("04_graphs/" + '_bitcoin_time_series.png')
+            i2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Bitcoin</h1>", unsafe_allow_html=True)
+            i2.image(price, width=670)
 
-        # Show graph Rare Pepe
-        name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
-        price = Image.open("04_graphs/" + name_dataframe)
-        i1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
-        i1.image(price)
-        st.markdown("<hr/>", unsafe_allow_html=True)
-            
+            # Show graph Rare Pepe
+            name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
+            price = Image.open("04_graphs/" + name_dataframe)
+            i1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
+            i1.image(price)
+            st.markdown("<hr/>", unsafe_allow_html=True)
 
-    if xcp_index == True:
 
-        xcp1, xc2 = st.columns((2, 3)) 
-        xcp1.subheader("Benchmark Rare Pepe Index - XCP")
-        xcp1.write("(Cumulative performance with 1 USD Dollar Investment)")
-        j1, j2 = st.columns((2, 2))
-        
-        # Import XCP data
-        df = pd.read_csv("02_input_data/" + "_xcp-usd.csv")
-        df_test = df[['timestamp','close']]
-        df_test['close'] = df_test['close'].div(df_test['close'].iat[0])
-        df_test["time"] = pd.to_datetime(df_test["timestamp"],unit='s')
-        df_test.rename(columns={"close":"Price in USD"},inplace=True)
+        if xcp_index == True:
 
-        # Create graph
-        df_test.plot(x ='time', y='Price in USD', kind = 'line')
-        plt.savefig("04_graphs/" + '_xcp_time_series.png')
+            xcp1, xc2 = st.columns((2, 3)) 
+            xcp1.subheader("Benchmark Rare Pepe Index - XCP")
+            xcp1.write("(Cumulative performance with 1 USD Dollar Investment)")
+            j1, j2 = st.columns((2, 2))
 
-        # Show graph XCP
-        price = Image.open("04_graphs/" + '_xcp_time_series.png')
-        j2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of XCP</h1>", unsafe_allow_html=True)
-        j2.image(price, width=670)
+            # Import XCP data
+            df = pd.read_csv("02_input_data/" + "_xcp-usd.csv")
+            df_test = df[['timestamp','close']]
+            df_test['close'] = df_test['close'].div(df_test['close'].iat[0])
+            df_test["time"] = pd.to_datetime(df_test["timestamp"],unit='s')
+            df_test.rename(columns={"close":"Price in USD"},inplace=True)
 
-        # Show graph Rare Pepe
-        name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
-        price = Image.open("04_graphs/" + name_dataframe)
-        j1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
-        j1.image(price)
-        st.markdown("<hr/>", unsafe_allow_html=True)
+            # Create graph
+            df_test.plot(x ='time', y='Price in USD', kind = 'line')
+            plt.savefig("04_graphs/" + '_xcp_time_series.png')
 
-    if pepecash_index == True:
+            # Show graph XCP
+            price = Image.open("04_graphs/" + '_xcp_time_series.png')
+            j2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of XCP</h1>", unsafe_allow_html=True)
+            j2.image(price, width=670)
 
-        pepe1, pepe2 = st.columns((2, 3)) 
-        pepe1.subheader("Benchmark Rare Pepe Index - Pepe Cash")
-        pepe1.write("(Cumulative performance with 1 USD Dollar Investment)")
-        k1, k2 = st.columns((2, 2))
-        
-        # Import Pepe Cash data
-        df = pd.read_csv("02_input_data/" + "_pepecash-usd.csv")
-        df_test = df[['timestamp','close']]
-        df_test['close'] = df_test['close'].div(df_test['close'].iat[0])
-        df_test["time"] = pd.to_datetime(df_test["timestamp"],unit='s')
-        df_test.rename(columns={"close":"Price in USD"},inplace=True)
+            # Show graph Rare Pepe
+            name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
+            price = Image.open("04_graphs/" + name_dataframe)
+            j1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
+            j1.image(price)
+            st.markdown("<hr/>", unsafe_allow_html=True)
 
-        # Create graph
-        df_test.plot(x ='time', y='Price in USD', kind = 'line')
-        plt.savefig("04_graphs/" + '_pepecash_time_series.png')
+        if pepecash_index == True:
 
-        # Show graph Pepe Cash
-        price = Image.open("04_graphs/" + '_pepecash_time_series.png')
-        k2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Pepe Cash</h1>", unsafe_allow_html=True)
-        k2.image(price, width=670)
+            pepe1, pepe2 = st.columns((2, 3)) 
+            pepe1.subheader("Benchmark Rare Pepe Index - Pepe Cash")
+            pepe1.write("(Cumulative performance with 1 USD Dollar Investment)")
+            k1, k2 = st.columns((2, 2))
 
-        # Show graph Rare Pepe
-        name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
-        price = Image.open("04_graphs/" + name_dataframe)
-        k1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
-        k1.image(price)
-        st.markdown("<hr/>", unsafe_allow_html=True)
+            # Import Pepe Cash data
+            df = pd.read_csv("02_input_data/" + "_pepecash-usd.csv")
+            df_test = df[['timestamp','close']]
+            df_test['close'] = df_test['close'].div(df_test['close'].iat[0])
+            df_test["time"] = pd.to_datetime(df_test["timestamp"],unit='s')
+            df_test.rename(columns={"close":"Price in USD"},inplace=True)
 
-    if nasdaq_index == True:
+            # Create graph
+            df_test.plot(x ='time', y='Price in USD', kind = 'line')
+            plt.savefig("04_graphs/" + '_pepecash_time_series.png')
 
-        nas1, nas2 = st.columns((2, 3)) 
-        nas1.subheader("Benchmark Rare Pepe Index - NASDAQ")
-        nas1.write("(Cumulative performance with 1 USD Dollar Investment)")
-        l1, l2 = st.columns((2, 2))
+            # Show graph Pepe Cash
+            price = Image.open("04_graphs/" + '_pepecash_time_series.png')
+            k2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Pepe Cash</h1>", unsafe_allow_html=True)
+            k2.image(price, width=670)
 
-        # Import NASDAQ data
-        df = pd.read_csv("02_input_data/" + "_nasdaq.csv")
-        df_test = df[['timestamp','close']]
-        df_test['close'] = df_test['close'].div(df_test['close'].iat[0])
-        df_test["time"] = pd.to_datetime(df_test["timestamp"],unit='s')
-        df_test.rename(columns={"close":"Price in USD"},inplace=True)
+            # Show graph Rare Pepe
+            name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
+            price = Image.open("04_graphs/" + name_dataframe)
+            k1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
+            k1.image(price)
+            st.markdown("<hr/>", unsafe_allow_html=True)
 
-        # Create graph
-        df_test.plot(x ='time', y='Price in USD', kind = 'line')
-        plt.savefig("04_graphs/" +'_nasdaq_time_series.png')
+        if nasdaq_index == True:
 
-        # Show graph NASDDAQ
-        price = Image.open("04_graphs/" + '_nasdaq_time_series.png')
-        l2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of NASDAQ</h1>", unsafe_allow_html=True)
-        l2.image(price, width=670)
+            nas1, nas2 = st.columns((2, 3)) 
+            nas1.subheader("Benchmark Rare Pepe Index - NASDAQ")
+            nas1.write("(Cumulative performance with 1 USD Dollar Investment)")
+            l1, l2 = st.columns((2, 2))
 
-        # Show graph Rare Pepe
-        name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
-        price = Image.open("04_graphs/" + name_dataframe)
-        l1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
-        l1.image(price)
-        st.markdown("<hr/>", unsafe_allow_html=True)
+            # Import NASDAQ data
+            df = pd.read_csv("02_input_data/" + "_nasdaq.csv")
+            df_test = df[['timestamp','close']]
+            df_test['close'] = df_test['close'].div(df_test['close'].iat[0])
+            df_test["time"] = pd.to_datetime(df_test["timestamp"],unit='s')
+            df_test.rename(columns={"close":"Price in USD"},inplace=True)
+
+            # Create graph
+            df_test.plot(x ='time', y='Price in USD', kind = 'line')
+            plt.savefig("04_graphs/" +'_nasdaq_time_series.png')
+
+            # Show graph NASDDAQ
+            price = Image.open("04_graphs/" + '_nasdaq_time_series.png')
+            l2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of NASDAQ</h1>", unsafe_allow_html=True)
+            l2.image(price, width=670)
+
+            # Show graph Rare Pepe
+            name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
+            price = Image.open("04_graphs/" + name_dataframe)
+            l1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
+            l1.image(price)
+            st.markdown("<hr/>", unsafe_allow_html=True)
 
     # Show final dataset
     if dataset_analysis == True:
