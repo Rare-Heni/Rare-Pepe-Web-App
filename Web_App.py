@@ -1559,7 +1559,8 @@ else:
     if xcp_index == True:
 
         xcp1, xc2 = st.columns((2, 3)) 
-        xcp1.subheader("Benchmark Rare Pepe Index - XCP (Cumulative performance with 1 USD Dollar Investment)")
+        xcp1.subheader("Benchmark Rare Pepe Index - XCP")
+        xcp1.write("(Cumulative performance with 1 USD Dollar Investment)")
         j1, j2 = st.columns((2, 2))
         
         # Import XCP data
@@ -1588,7 +1589,8 @@ else:
     if pepecash_index == True:
 
         pepe1, pepe2 = st.columns((2, 3)) 
-        pepe1.subheader("Benchmark Rare Pepe Index - Pepe Cash (Cumulative performance with 1 USD Dollar Investment)")
+        pepe1.subheader("Benchmark Rare Pepe Index - Pepe Cash")
+        pepe1.write("(Cumulative performance with 1 USD Dollar Investment)")
         k1, k2 = st.columns((2, 2))
         
         # Import Pepe Cash data
@@ -1617,7 +1619,8 @@ else:
     if nasdaq_index == True:
 
         nas1, nas2 = st.columns((2, 3)) 
-        nas1.subheader("Benchmark Rare Pepe Index - NASDAQ (Cumulative performance with 1 USD Dollar Investment)")
+        nas1.subheader("Benchmark Rare Pepe Index - NASDAQ")
+        nas1.write("(Cumulative performance with 1 USD Dollar Investment)")
         l1, l2 = st.columns((2, 2))
 
         # Import NASDAQ data
