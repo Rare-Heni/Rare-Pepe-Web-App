@@ -1506,11 +1506,11 @@ else:
             # Show dataframe
             df = pd.read_csv("03_output_data/" + name_dataframe)
             df_test = df[['Date','Volume sold']]
-            h1.markdown("Data:")
+            h1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset</h1>", unsafe_allow_html=True)
             h1.dataframe(df_test, height=500)
 
             # Show graph
-            h2.markdown("Graph:")
+            h2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Volume sold over Time</h1>", unsafe_allow_html=True)
             df_test["time"] = pd.to_datetime(df_test["Date"])
             df_test.plot(x ='time', y='Volume sold', kind = 'line')
 
