@@ -1666,7 +1666,7 @@ else:
         st.markdown("<hr/>", unsafe_allow_html=True)
 
     # Execution Time
-    st.text("Metadata:")
+    st.text("Metadata")
     end_time = datetime.now()
     execution_time = end_time - begin_time
     st.caption("Runtime: " + str(execution_time))
