@@ -1530,6 +1530,7 @@ else:
     # Missing selection of benchmark index
     if benchmark == True and bitcoin_index == False and xcp_index == False and pepecash_index == False and nasdaq_index == False:
         st.markdown("<h1 style='text-align: center; color: green;font-size:20px;'>Please select a benchmark index!</h1>", unsafe_allow_html=True)
+        st.markdown("<hr/>", unsafe_allow_html=True)
     
     # Selection for benchmark index
     if benchmark == True:
