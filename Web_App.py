@@ -44,6 +44,13 @@ with st.sidebar.form(key = "columns in form"):
     benchmark = st.checkbox("Benchmark")
     dataset_analysis = st.checkbox("Dataset")
     
+    # Defining checkboxes for indices
+    st.subheader("Benchmark Index")
+    bitcoin_index = st.checkbox("Bitcoin")
+    xcp_index = st.checkbox("XCP")
+    pepecash_index = st.checkbox("PepeCash")
+    nasdaq_index = st.checkbox("NASDAQ")  
+    
     # Defining checkboxes for filters
     st.subheader("Filters")
     observation_time = st.selectbox(label = "Period of Time", options = ["All",2016,2017,2018,2019,2020,2021,2022])
@@ -55,13 +62,9 @@ with st.sidebar.form(key = "columns in form"):
     number_transactions = st.radio(label = "Min Number Transactions", options = [5,10])
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
-    # Defining checkboxes for indices
-    st.subheader("Benchmark Index")
-    bitcoin_index = st.checkbox("Bitcoin")
-    xcp_index = st.checkbox("XCP")
-    pepecash_index = st.checkbox("PepeCash")
-    nasdaq_index = st.checkbox("NASDAQ")  
+    # Start the analysis
     submitted = st.form_submit_button("Submit")
+    
 st.sidebar.subheader("Impressum")
 st.sidebar.caption("This dashboard is a result of the master thesis of Henrik Pitz. If you like the analysis, you can support me with a donation at: 1HKuL7ecSsExU3KAU7qVtVLusUgt7DYHo6. I am working on adding more analysis.")
 
