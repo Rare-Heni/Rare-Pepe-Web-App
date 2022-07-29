@@ -1200,7 +1200,7 @@ else:
     if marketcap_weighted == True:
         
         mcap1, mcap2 = st.columns((2, 3)) 
-        mcap1.subheader("Market-Cap Weighted Price Index")
+        mcap1.subheader("Market-Cap Weighted Price Index of Rare Pepes")
         f1, f2 = st.columns((2, 3))
         
         name_dataframe = "df_market_cap_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
@@ -1217,7 +1217,7 @@ else:
 
             name_dataframe = "png_market_cap_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
             price = Image.open("04_graphs/" + name_dataframe)
-            f2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of the Market Weighted Rare Pepe Index</h1>", unsafe_allow_html=True)
+            f2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of the Market-Cap Weighted Rare Pepe Index</h1>", unsafe_allow_html=True)
             f2.image(price)
             
         # Creation of the market weighted price index dataset and graph    
@@ -1283,7 +1283,7 @@ else:
             f1.dataframe(df, height=500)
         
             # show graph
-            f2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of the Market Weighted Rare Pepe Index</h1>", unsafe_allow_html=True)
+            f2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of the Market-Cap Weighted Rare Pepe Index</h1>", unsafe_allow_html=True)
             df_test["time"] = pd.to_datetime(df_test["Date_Index"])
             df_test.plot(x ='time', y='Price_Level', kind = 'line')
 
@@ -1305,7 +1305,7 @@ else:
         path = Path("03_output_data/" + path_to_file)
 
         gini1, gini2 = st.columns((2, 3)) 
-        gini1.subheader("Gini Coefficient")
+        gini1.subheader("Gini Coefficient of Rare Pepes")
         g1, g2 = st.columns((2, 3))
 
         # check if dataframe already exists
