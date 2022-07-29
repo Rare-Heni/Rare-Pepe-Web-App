@@ -1528,7 +1528,8 @@ else:
     if bitcoin_index == True:
 
         bi1, bi2 = st.columns((2, 3)) 
-        bi1.subheader("Benchmark Rare Pepe Index - Bitcoin (Cumulative performance with 1 USD Dollar Investment)")
+        bi1.subheader("Benchmark Rare Pepe Index - Bitcoin")
+        bi2.subheader("(Cumulative performance with 1 USD Dollar Investment)")
         i1, i2 = st.columns((2, 2))
 
         # Import Bitcoin data
