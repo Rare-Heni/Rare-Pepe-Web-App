@@ -1449,7 +1449,8 @@ else:
     if volume_sold == True:
 
         vo1, vo2 = st.columns((2, 3)) 
-        vo1.subheader("Volume sold")
+        vo1.subheader("Volume sold of Rare Pepes")
+        vo1.write("(Total Volume sold over Time Period)")
         h1, h2 = st.columns((2, 3))
 
         name_dataframe = "df_volume_sold_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
