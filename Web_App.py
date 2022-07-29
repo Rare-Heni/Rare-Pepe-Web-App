@@ -1527,6 +1527,9 @@ else:
     # Comparison with indices
     #############################################################
     
+    if benchmark == True and bitcoin_index = False and xcp_index == False and pepecash_index == False and nasdaq_index == False:
+        i2.markdown("<h1 style='text-align: center; color: green;font-size:20px;'>Please select a benchmark index!</h1>", unsafe_allow_html=True)
+    
     if benchmark == True:
 
         if bitcoin_index == True:
