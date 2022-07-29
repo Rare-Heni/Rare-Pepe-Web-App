@@ -38,7 +38,7 @@ with st.sidebar.form(key = "columns in form"):
     # Defining checkboxes for analysis methods
     st.subheader("Analysis Method")
     unweighted = st.checkbox("Unweighted Price Index")
-    marketcap_weighted = st.checkbox("Market Cap Weighted Price Index")
+    marketcap_weighted = st.checkbox("Market-Cap Weighted Price Index")
     gini_coef = st.checkbox("Gini-Coefficient")
     volume_sold = st.checkbox("Volume Sold")
     dataset_analysis = st.checkbox("Dataset")
@@ -1050,7 +1050,8 @@ else:
         # Showing used Rare Pepes in the analysis
         
         d1, d2 = st.columns((2, 2))
-        d1.write("Used Rare Pepes: " + str(len(unique_values)))
+        text = ("Number of Rare Pepes in the Analysis: " + str(len(unique_values)))
+        d1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>text</h1>", unsafe_allow_html=True)
         st.markdown("<hr/>", unsafe_allow_html=True)
 
         # Saving dataframe as csv
@@ -1129,7 +1130,7 @@ else:
         path = Path("03_output_data/" + path_to_file)
 
         un1, un2 = st.columns((2, 3)) 
-        un1.subheader("Unweighted Price Index")
+        un1.subheader("Unweighted Price Index of Rare Pepes")
         e1, e2 = st.columns((2, 3))
         
         # Checking if file already exists
@@ -1137,12 +1138,12 @@ else:
         if path.is_file() == True:
             df = pd.read_csv("03_output_data/" + name_dataframe)
             df = df[['Date_Index','Price_Level']]
-            e1.markdown("Data:")
+            e1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset</h1>", unsafe_allow_html=True)
             e1.dataframe(df, height=500)
 
             name_dataframe = "png_df_unweighted_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
             price = Image.open("04_graphs/" + name_dataframe)
-            e2.markdown("Graph:")
+            e2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of the Unweighted Rare Pepe Index</h1>", unsafe_allow_html=True)
             e2.image(price)
 
         # Creation of the unweighted price index dataset and graph    
@@ -1166,11 +1167,11 @@ else:
             # Show dataframe
             df = pd.read_csv("03_output_data/" + name_dataframe)
             df = df[['Date_Index','Price_Level']]
-            e1.markdown("Data:")
+            e1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset</h1>", unsafe_allow_html=True)
             e1.dataframe(df, height=500)
             
             # show graph
-            e2.markdown("Graph:")
+            e2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of the Unweighted Rare Pepe Index</h1>", unsafe_allow_html=True)
             df_test["time"] = pd.to_datetime(df_test["Date_Index"])
             df_test.plot(x ='time', y='Price_Level', kind = 'line')
 
@@ -1194,7 +1195,7 @@ else:
         st.markdown("<hr/>", unsafe_allow_html=True)   
 
     #############################################################
-    # Calculation of the market weighted price index
+    # Calculation of the market-cap weighted price index
     ############################################################# 
 
     if marketcap_weighted == True:
