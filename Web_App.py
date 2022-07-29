@@ -1461,12 +1461,12 @@ else:
         if path.is_file() == True:
             df = pd.read_csv("03_output_data/" + name_dataframe)
             df = df[['Date','Volume sold']]
-            h1.markdown("Data:")
+            h1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset</h1>", unsafe_allow_html=True)
             h1.dataframe(df, height=500)
 
             name_dataframe = "png_volume_sold_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
             price = Image.open("04_graphs/" + name_dataframe)
-            h2.markdown("Graph:")
+            h2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Volume sold over Time</h1>", unsafe_allow_html=True)
             h2.image(price)
         
         # Calculation of the volume sold
