@@ -1437,7 +1437,7 @@ else:
 
             # Showing the graph
             gini_graph = Image.open("04_graphs/" + graph)
-            g2.markdown("Graph:")
+            g2.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset</h1>", unsafe_allow_html=True)
             g2.image(gini_graph)
             g1.write("The Gini-Coefficient is the most well-known measure of inequality. A Gini-Coefficient of zero means all holders have the same amount of cards. A Gini-Coefficient of one means one holder has all cards. The lower the Gini coefficient, the more equal the holders are. The current total Gini-Coefficient equals: " + str(total_gini)+ ".")
         st.markdown("<hr/>", unsafe_allow_html=True)
@@ -1450,7 +1450,7 @@ else:
 
         vo1, vo2 = st.columns((2, 3)) 
         vo1.subheader("Volume sold of Rare Pepes")
-        vo1.write("(Total Volume sold over Time Period)")
+        vo1.write("(Total Volume sold over Time Period in USD)")
         h1, h2 = st.columns((2, 3))
 
         name_dataframe = "df_volume_sold_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
