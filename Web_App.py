@@ -44,12 +44,16 @@ with st.sidebar.form(key = "columns in form"):
     benchmark = st.checkbox("Benchmark")
     dataset_analysis = st.checkbox("Dataset")
     
+    st.markdown("<hr/>", unsafe_allow_html=True)
+    
     # Defining checkboxes for indices
     st.subheader("Benchmark Index")
     bitcoin_index = st.checkbox("Bitcoin")
     xcp_index = st.checkbox("XCP")
     pepecash_index = st.checkbox("PepeCash")
     nasdaq_index = st.checkbox("NASDAQ")  
+    
+    st.markdown("<hr/>", unsafe_allow_html=True)
     
     # Defining checkboxes for filters
     st.subheader("Filters")
@@ -61,6 +65,8 @@ with st.sidebar.form(key = "columns in form"):
     card_supply = st.radio(label = "Max Supply Card", options = [100, 500,1000])
     number_transactions = st.radio(label = "Min Number Transactions", options = [5,10])
     st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
+    
+    st.markdown("<hr/>", unsafe_allow_html=True)
 
     # Start the analysis
     submitted = st.form_submit_button("Submit")
