@@ -1576,13 +1576,13 @@ else:
 
         # Show graph XCP
         price = Image.open("04_graphs/" + '_xcp_time_series.png')
-        j2.markdown("XCP Time Series:")
+        j2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of XCP</h1>", unsafe_allow_html=True)
         j2.image(price, width=670)
 
         # Show graph Rare Pepe
         name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
         price = Image.open("04_graphs/" + name_dataframe)
-        j1.markdown("Rare Pepe Time Series:")
+        j1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
         j1.image(price)
         st.markdown("<hr/>", unsafe_allow_html=True)
 
@@ -1606,13 +1606,13 @@ else:
 
         # Show graph Pepe Cash
         price = Image.open("04_graphs/" + '_pepecash_time_series.png')
-        k2.markdown("Pepecash Time Series:")
+        k2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Pepe Cash</h1>", unsafe_allow_html=True)
         k2.image(price, width=670)
 
         # Show graph Rare Pepe
         name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
         price = Image.open("04_graphs/" + name_dataframe)
-        k1.markdown("Rare Pepe Time Series:")
+        k1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
         k1.image(price)
         st.markdown("<hr/>", unsafe_allow_html=True)
 
@@ -1636,13 +1636,13 @@ else:
 
         # Show graph NASDDAQ
         price = Image.open("04_graphs/" + '_nasdaq_time_series.png')
-        l2.markdown("NASDAQ Time Series:")
+        l2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of NASDAQ</h1>", unsafe_allow_html=True)
         l2.image(price, width=670)
 
         # Show graph Rare Pepe
         name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
         price = Image.open("04_graphs/" + name_dataframe)
-        l1.markdown("Rare Pepe Time Series:")
+        l1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
         l1.image(price)
         st.markdown("<hr/>", unsafe_allow_html=True)
 
