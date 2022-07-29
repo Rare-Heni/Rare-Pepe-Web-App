@@ -1674,7 +1674,7 @@ else:
 
         # Show total transactions
         st.subheader("Dataset ")
-        st.write("Number of Transactions in the Analysis " + str(len(df_total_time)))
+        st.write("Number of Transactions in the Analysis: " + str(len(df_total_time)))
         st.dataframe(df_total_time)
         st.markdown("<hr/>", unsafe_allow_html=True)
 
