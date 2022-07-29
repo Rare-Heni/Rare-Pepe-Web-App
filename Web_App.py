@@ -1669,6 +1669,6 @@ else:
     st.text("Metadata:")
     end_time = datetime.now()
     execution_time = end_time - begin_time
-    st.text("Runtime: " + str(execution_time))
-    st.text("Current Date: " + current_month)
-    st.text("Load Date: " + load_month)
+    st.caption("Runtime: " + str(execution_time))
+    st.caption("Current Date: " + current_month)
+    st.caption("Load Date: " + load_month)
