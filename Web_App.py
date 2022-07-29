@@ -1545,7 +1545,7 @@ else:
 
         # Show graph Bitcoin
         price = Image.open("04_graphs/" + '_bitcoin_time_series.png')
-        i2.markdown("Bitcoin Time Series:")
+        i2.markdown("**Bitcoin Time Series:**")
         i2.image(price, width=670)
 
         # Show graph Rare Pepe
