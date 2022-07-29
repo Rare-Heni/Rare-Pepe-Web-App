@@ -1050,7 +1050,7 @@ else:
         # Showing used Rare Pepes in the analysis
         
         d1, d2 = st.columns((2, 2))
-        text = ("Number of Rare Pepes in the Analysis: " + str(len(unique_values)))
+        d1.caption = ("Number of Rare Pepes in the Analysis: " + str(len(unique_values)))
         d1.markdown("<h1 style='text-align: left; color: green;font-size:18px;>text</h1>", unsafe_allow_html=True)
         st.markdown("<hr/>", unsafe_allow_html=True)
 
