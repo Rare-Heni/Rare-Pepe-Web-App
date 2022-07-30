@@ -1650,20 +1650,24 @@ else:
             df_test["time"] = pd.to_datetime(df_test["timestamp"],unit='s')
             df_test.rename(columns={"close":"Price in USD"},inplace=True)
 
-            # Create graph
-            df_test.plot(x ='time', y='Price in USD', kind = 'line')
-            plt.savefig("04_graphs/" +'_nasdaq_time_series.png')
-
-            # Show graph NASDDAQ
-            price = Image.open("04_graphs/" + '_nasdaq_time_series.png')
+            # Show graph NASDAQ
             l2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of NASDAQ</h1>", unsafe_allow_html=True)
-            l2.image(price, width=670)
+            fig = plt.figure()
+            plt.plot('time','Price in USD',data = df_test, color = "green")
+            with l2:
+                fig_html = mpld3.fig_to_html(fig)
+                components.html(fig_html, height=850, width=850)
 
             # Show graph Rare Pepe
-            name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
-            price = Image.open("04_graphs/" + name_dataframe)
+            dataframe = "df_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
             l1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
-            l1.image(price)
+            dataframe = dataframe.loc[dataframe['Price_Level'] != 0]
+            
+            plt.plot('Date_Index','Price Level',data = dataframe, color = "green")
+            with l1:
+                fig_html = mpld3.fig_to_html(fig)
+                components.html(fig_html, height=850, width=850)
+            
             st.markdown("<hr/>", unsafe_allow_html=True)
 
     # Show final dataset
