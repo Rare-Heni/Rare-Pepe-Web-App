@@ -19,7 +19,6 @@ import requests
 import mpld3
 import streamlit.components.v1 as components
 
-
 #############################################################
 # Page Layout
 #############################################################
@@ -1341,12 +1340,21 @@ else:
             total_gini = round(total_gini, 3)      
 
             # show graph
-            graph = "png_gini_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
-            gini_graph = Image.open("04_graphs/" + graph)
-            g2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Visualization of the Gini Coefficient</h1>", unsafe_allow_html=True)
-            g2.image(gini_graph)
+            name_dataframe = "df_gini_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+            df_gini = pd.read_csv("03_output_data/" + name_dataframe)
+            g2.markdown("Graph:")
+            fig_1 = plt.figure()
+            x = [0,0.2,0.4,0.6,0.8,1.0]
+            df_gini_total = df_gini.groupby(["x"]).mean()
+            df_gini_total.reset_index()
+            
+            plt.plot(x,df_gini_total["points"],"--o", color = "green")
+            plt.plot(x,x,"--o", color = "black")
+            with g2:
+                fig_test = mpld3.fig_to_html(fig_1)
+                components.html(fig_test, height=850, width=850)efficient is the most well-known measure of inequality. A Gini-Coefficient of zero means all holders have the same amount of cards. A Gini-Coefficient of one means one holder has all cards. The lower the Gini coefficient, the more equal the holders are. The current total Gini-Coefficient equals: " + str(total_gini)+ ".")
             g1.write("The Gini-Coefficient is the most well-known measure of inequality. A Gini-Coefficient of zero means all holders have the same amount of cards. A Gini-Coefficient of one means one holder has all cards. The lower the Gini coefficient, the more equal the holders are. The current total Gini-Coefficient equals: " + str(total_gini)+ ".")
-        
+            
         # Calculation of the Gini coefficient
         # Explanation see above
         
@@ -1446,20 +1454,21 @@ else:
             df_gini_name = "df_gini_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
             df_gini.to_csv("03_output_data/" + df_gini_name, index = False)
 
-            graph = "png_gini_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
-            
-            # Creation of the gini coefficient dataframe
+            # show graph
+            name_dataframe = "df_gini_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+            df_gini = pd.read_csv("03_output_data/" + name_dataframe)
+            g2.markdown("Graph:")
+            fig_1 = plt.figure()
+            x = [0,0.2,0.4,0.6,0.8,1.0]
             df_gini_total = df_gini.groupby(["x"]).mean()
-            plt.close()
-            plt.plot(x,df_gini_total["points"],"--o" )
-            plt.plot(x,x,"--o" )
-            plt.title("Card Distribution of Holders:")
-            plt.savefig("04_graphs/" + graph)
-
-            # Showing the graph
-            gini_graph = Image.open("04_graphs/" + graph)
-            g2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Visualization of the Gini Coefficient</h1>", unsafe_allow_html=True)
-            g2.image(gini_graph)
+            df_gini_total.reset_index()
+            
+            plt.plot(x,df_gini_total["points"],"--o", color = "green")
+            plt.plot(x,x,"--o", color = "black")
+            with g2:
+                fig_test = mpld3.fig_to_html(fig_1)
+                components.html(fig_test, height=650, width=650)
+                
             g1.write("The Gini-Coefficient is the most well-known measure of inequality. A Gini-Coefficient of zero means all holders have the same amount of cards. A Gini-Coefficient of one means one holder has all cards. The lower the Gini coefficient, the more equal the holders are. The current total Gini-Coefficient equals: " + str(total_gini)+ ".")
         st.markdown("<hr/>", unsafe_allow_html=True)
 
