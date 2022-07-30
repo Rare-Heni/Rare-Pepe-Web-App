@@ -1662,6 +1662,7 @@ else:
             dataframe = "df_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
             l1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
             dataframe = dataframe.loc[dataframe['Price_Level'] != 0]
+            dataframe["Price_Level"] = pd.to_datetime(dateframe["Price_Level"],format='%Y-%m'))
             
             plt.plot('Date_Index','Price_Level',data = dataframe, color = "green")
             with l1:
