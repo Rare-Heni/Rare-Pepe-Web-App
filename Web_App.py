@@ -1486,10 +1486,18 @@ else:
             h1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset</h1>", unsafe_allow_html=True)
             h1.dataframe(df, height=500)
 
-            name_dataframe = "png_volume_sold_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
-            price = Image.open("04_graphs/" + name_dataframe)
+            # Show graph
+            dataframe = "df_volume_sold_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+            df = pd.read_csv("03_output_data/" +dataframe)
             h2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Volume sold over Time</h1>", unsafe_allow_html=True)
-            h2.image(price)
+            df = df.loc[df['Volume sold'] != 0]
+            df["time"] = pd.to_datetime(df["Date"])
+            
+            fig_1 = plt.figure()
+            plt.plot('time','Volume sold',data = df, color = "green")
+            with h2:
+                fig_test = mpld3.fig_to_html(fig_1)
+                components.html(fig_test, height=650, width=650)
         
         # Calculation of the volume sold
         else:
@@ -1532,15 +1540,17 @@ else:
             h1.dataframe(df_test, height=500)
 
             # Show graph
+            dataframe = "df_volume_sold_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+            df = pd.read_csv("03_output_data/" +dataframe)
             h2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Volume sold over Time</h1>", unsafe_allow_html=True)
-            df_test["time"] = pd.to_datetime(df_test["Date"])
-            df_test.plot(x ='time', y='Volume sold', kind = 'line')
-
-            # Save graph
-            name_dataframe = "png_volume_sold_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
-            plt.savefig("04_graphs/" + name_dataframe)
-            price = Image.open("04_graphs/" + name_dataframe)
-            h2.image(price)
+            df = df.loc[df['Volume sold'] != 0]
+            df["time"] = pd.to_datetime(df["Date"])
+            
+            fig_1 = plt.figure()
+            plt.plot('time','Volume sold',data = df, color = "green")
+            with h2:
+                fig_test = mpld3.fig_to_html(fig_1)
+                components.html(fig_test, height=650, width=650)
         st.markdown("<hr/>", unsafe_allow_html=True)
 
     #############################################################
