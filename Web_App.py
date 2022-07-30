@@ -1570,7 +1570,7 @@ else:
             df_test.rename(columns={"close":"Price in USD"},inplace=True)
 
              # Show graph Bitcoin
-            i2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of NASDAQ</h1>", unsafe_allow_html=True)
+            i2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Bitcoin</h1>", unsafe_allow_html=True)
             fig = plt.figure()
             plt.plot('time','Price in USD',data = df_test, color = "green")
             with i2:
@@ -1607,7 +1607,7 @@ else:
             df_test.rename(columns={"close":"Price in USD"},inplace=True)
 
              # Show graph XCP
-            j2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of NASDAQ</h1>", unsafe_allow_html=True)
+            j2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of XCP</h1>", unsafe_allow_html=True)
             fig = plt.figure()
             plt.plot('time','Price in USD',data = df_test, color = "green")
             with j2:
@@ -1644,7 +1644,7 @@ else:
             df_test.rename(columns={"close":"Price in USD"},inplace=True)
 
              # Show graph Pepe Cash
-            k2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of NASDAQ</h1>", unsafe_allow_html=True)
+            k2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Pepe Cash</h1>", unsafe_allow_html=True)
             fig = plt.figure()
             plt.plot('time','Price in USD',data = df_test, color = "green")
             with k2:
