@@ -1694,6 +1694,7 @@ else:
             with l1:
                 fig_test = mpld3.fig_to_html(fig_1)
                 components.html(fig_test, height=850, width=850)
+                st.markdown("<hr/>", unsafe_allow_html=True)
 
             st.markdown("<hr/>", unsafe_allow_html=True)
 
