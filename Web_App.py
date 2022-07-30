@@ -1352,7 +1352,7 @@ else:
             plt.plot(x,x,"--o", color = "black")
             with g2:
                 fig_test = mpld3.fig_to_html(fig_1)
-                components.html(fig_test, height=850, width=850)efficient is the most well-known measure of inequality. A Gini-Coefficient of zero means all holders have the same amount of cards. A Gini-Coefficient of one means one holder has all cards. The lower the Gini coefficient, the more equal the holders are. The current total Gini-Coefficient equals: " + str(total_gini)+ ".")
+                components.html(fig_test, height=650, width=650)
             g1.write("The Gini-Coefficient is the most well-known measure of inequality. A Gini-Coefficient of zero means all holders have the same amount of cards. A Gini-Coefficient of one means one holder has all cards. The lower the Gini coefficient, the more equal the holders are. The current total Gini-Coefficient equals: " + str(total_gini)+ ".")
             
         # Calculation of the Gini coefficient
