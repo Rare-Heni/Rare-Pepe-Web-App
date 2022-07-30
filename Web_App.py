@@ -1663,7 +1663,7 @@ else:
             l1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
             dataframe = dataframe.loc[dataframe['Price_Level'] != 0]
             
-            plt.plot('Date_Index','Price Level',data = dataframe, color = "green")
+            plt.plot('Date_Index','Price_Level',data = dataframe, color = "green")
             with l1:
                 fig_html = mpld3.fig_to_html(fig)
                 components.html(fig_html, height=850, width=850)
