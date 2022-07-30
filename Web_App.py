@@ -1569,11 +1569,18 @@ else:
             i2.image(price, width=670)
 
             # Show graph Rare Pepe
-            name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
-            price = Image.open("04_graphs/" + name_dataframe)
-            i1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
-            i1.image(price)
-            st.markdown("<hr/>", unsafe_allow_html=True)
+            dataframe = "df_unweighted_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+            df = pd.read_csv("03_output_data/" +dataframe)
+            l1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
+            df = df.loc[df['Price_Level'] != 0]
+            df["time"] = pd.to_datetime(df["Date_Index"])
+            df['Price_Level'] = df['Price_Level'].div(df['Price_Level'].iat[0])
+
+            fig_1 = plt.figure()
+            plt.plot('time','Price_Level',data = df, color = "green")
+            with l1:
+                fig_test = mpld3.fig_to_html(fig_1)
+                components.html(fig_test, height=850, width=850)
 
 
         if xcp_index == True:
@@ -1600,11 +1607,18 @@ else:
             j2.image(price, width=670)
 
             # Show graph Rare Pepe
-            name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
-            price = Image.open("04_graphs/" + name_dataframe)
-            j1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
-            j1.image(price)
-            st.markdown("<hr/>", unsafe_allow_html=True)
+            dataframe = "df_unweighted_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+            df = pd.read_csv("03_output_data/" +dataframe)
+            l1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
+            df = df.loc[df['Price_Level'] != 0]
+            df["time"] = pd.to_datetime(df["Date_Index"])
+            df['Price_Level'] = df['Price_Level'].div(df['Price_Level'].iat[0])
+
+            fig_1 = plt.figure()
+            plt.plot('time','Price_Level',data = df, color = "green")
+            with l1:
+                fig_test = mpld3.fig_to_html(fig_1)
+                components.html(fig_test, height=850, width=850)
 
         if pepecash_index == True:
 
@@ -1630,11 +1644,18 @@ else:
             k2.image(price, width=670)
 
             # Show graph Rare Pepe
-            name_dataframe = "png_df_cum_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
-            price = Image.open("04_graphs/" + name_dataframe)
-            k1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
-            k1.image(price)
-            st.markdown("<hr/>", unsafe_allow_html=True)
+            dataframe = "df_unweighted_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+            df = pd.read_csv("03_output_data/" +dataframe)
+            l1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
+            df = df.loc[df['Price_Level'] != 0]
+            df["time"] = pd.to_datetime(df["Date_Index"])
+            df['Price_Level'] = df['Price_Level'].div(df['Price_Level'].iat[0])
+
+            fig_1 = plt.figure()
+            plt.plot('time','Price_Level',data = df, color = "green")
+            with l1:
+                fig_test = mpld3.fig_to_html(fig_1)
+                components.html(fig_test, height=850, width=850)
 
         if nasdaq_index == True:
 
