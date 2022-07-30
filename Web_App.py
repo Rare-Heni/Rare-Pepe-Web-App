@@ -1161,7 +1161,7 @@ else:
             plt.plot('time','Price_Level',data = df, color = "green")
             with e2:
                 fig_test = mpld3.fig_to_html(fig_1)
-                components.html(fig_test, height=850, width=850)
+                components.html(fig_test, height=650, width=650)
 
         # Creation of the unweighted price index dataset and graph    
         else:
@@ -1198,7 +1198,7 @@ else:
             plt.plot('time','Price_Level',data = df, color = "green")
             with e2:
                 fig_test = mpld3.fig_to_html(fig_1)
-                components.html(fig_test, height=850, width=850)
+                components.html(fig_test, height=650, width=650)
             
         st.markdown("<hr/>", unsafe_allow_html=True)   
 
@@ -1237,7 +1237,7 @@ else:
             plt.plot('time','Price_Level',data = df, color = "green")
             with f2:
                 fig_test = mpld3.fig_to_html(fig_1)
-                components.html(fig_test, height=850, width=850)
+                components.html(fig_test, height=650, width=650)
             
         # Creation of the market weighted price index dataset and graph    
         else:
@@ -1312,7 +1312,7 @@ else:
             plt.plot('time','Price_Level',data = df, color = "green")
             with f2:
                 fig_test = mpld3.fig_to_html(fig_1)
-                components.html(fig_test, height=850, width=850)
+                components.html(fig_test, height=650, width=650)
         st.markdown("<hr/>", unsafe_allow_html=True)
 
     #############################################################
