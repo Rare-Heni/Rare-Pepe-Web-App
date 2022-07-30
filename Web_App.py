@@ -1635,14 +1635,13 @@ else:
             df_test["time"] = pd.to_datetime(df_test["timestamp"],unit='s')
             df_test.rename(columns={"close":"Price in USD"},inplace=True)
 
-            # Create graph
-            df_test.plot(x ='time', y='Price in USD', kind = 'line')
-            plt.savefig("04_graphs/" + '_pepecash_time_series.png')
-
-            # Show graph Pepe Cash
-            price = Image.open("04_graphs/" + '_pepecash_time_series.png')
-            k2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Pepe Cash</h1>", unsafe_allow_html=True)
-            k2.image(price, width=670)
+             # Show graph NASDAQ
+            k2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of NASDAQ</h1>", unsafe_allow_html=True)
+            fig = plt.figure()
+            plt.plot('time','Price in USD',data = df_test, color = "green")
+            with k2:
+                fig_html = mpld3.fig_to_html(fig)
+                components.html(fig_html, height=650, width=650)
 
             # Show graph Rare Pepe
             dataframe = "df_unweighted_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
@@ -1679,7 +1678,7 @@ else:
             plt.plot('time','Price in USD',data = df_test, color = "green")
             with l2:
                 fig_html = mpld3.fig_to_html(fig)
-                components.html(fig_html, height=850, width=850)
+                components.html(fig_html, height=650, width=650)
 
             # Show graph Rare Pepe
             dataframe = "df_unweighted_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
