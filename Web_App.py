@@ -50,7 +50,7 @@ with st.sidebar.form(key = "columns in form"):
     
     # Possible future extension
     #observation_time = st.selectbox(label = "Period of Time", options = ["All",2016,2017,2018,2019,2020,2021,2022])
-    
+    observation_time = "All"
     all_series = ["All"]
     series_test = list(range(1,38))
     all_series.extend(series_test)
