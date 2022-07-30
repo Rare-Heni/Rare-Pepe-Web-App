@@ -1560,10 +1560,10 @@ else:
             df_test.rename(columns={"close":"Price in USD"},inplace=True)
 
              # Show graph Bitcoin
-            l2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of NASDAQ</h1>", unsafe_allow_html=True)
+            i2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of NASDAQ</h1>", unsafe_allow_html=True)
             fig = plt.figure()
             plt.plot('time','Price in USD',data = df_test, color = "green")
-            with l2:
+            with i2:
                 fig_html = mpld3.fig_to_html(fig)
                 components.html(fig_html, height=650, width=650)
 
