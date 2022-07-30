@@ -1650,7 +1650,7 @@ else:
             df_test["time"] = pd.to_datetime(df_test["timestamp"],unit='s')
             df_test.rename(columns={"close":"Price in USD"},inplace=True)
 
-            # Show graph NASDAQ
+             # Show graph NASDAQ
             l2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of NASDAQ</h1>", unsafe_allow_html=True)
             fig = plt.figure()
             plt.plot('time','Price in USD',data = df_test, color = "green")
@@ -1659,16 +1659,19 @@ else:
                 components.html(fig_html, height=850, width=850)
 
             # Show graph Rare Pepe
-            dataframe = "df_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
+            dataframe = "df_unweighted_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+            df = pd.read_csv("03_output_data/" +dataframe)
             l1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
-            dataframe = dataframe.loc[dataframe['Price_Level'] != 0]
-            dataframe["Price_Level"] = pd.to_datetime(dateframe["Price_Level"],format='%Y-%m')
-            
-            plt.plot('Date_Index','Price_Level',data = dataframe, color = "green")
+            df = df.loc[df['Price_Level'] != 0]
+            df["time"] = pd.to_datetime(df["Date_Index"])
+            df['Price_Level'] = df['Price_Level'].div(df['Price_Level'].iat[0])
+
+            fig_1 = plt.figure()
+            plt.plot('time','Price_Level',data = df, color = "green")
             with l1:
-                fig_html = mpld3.fig_to_html(fig)
-                components.html(fig_html, height=850, width=850)
-            
+                fig_test = mpld3.fig_to_html(fig_1)
+                components.html(fig_test, height=850, width=850)
+
             st.markdown("<hr/>", unsafe_allow_html=True)
 
     # Show final dataset
