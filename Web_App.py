@@ -1580,7 +1580,7 @@ else:
             plt.plot('time','Price_Level',data = df, color = "green")
             with i1:
                 fig_test = mpld3.fig_to_html(fig_1)
-                components.html(fig_test, height=850, width=850)
+                components.html(fig_test, height=650, width=650)
             st.markdown("<hr/>", unsafe_allow_html=True)
 
         if xcp_index == True:
@@ -1618,7 +1618,7 @@ else:
             plt.plot('time','Price_Level',data = df, color = "green")
             with j1:
                 fig_test = mpld3.fig_to_html(fig_1)
-                components.html(fig_test, height=850, width=850)
+                components.html(fig_test, height=650, width=650)
             st.markdown("<hr/>", unsafe_allow_html=True)
 
         if pepecash_index == True:
@@ -1656,7 +1656,7 @@ else:
             plt.plot('time','Price_Level',data = df, color = "green")
             with k1:
                 fig_test = mpld3.fig_to_html(fig_1)
-                components.html(fig_test, height=850, width=850)
+                components.html(fig_test, height=650, width=650)
             st.markdown("<hr/>", unsafe_allow_html=True)
 
         if nasdaq_index == True:
@@ -1693,7 +1693,7 @@ else:
             plt.plot('time','Price_Level',data = df, color = "green")
             with l1:
                 fig_test = mpld3.fig_to_html(fig_1)
-                components.html(fig_test, height=500, width=500)
+                components.html(fig_test, height=650, width=650)
 
             st.markdown("<hr/>", unsafe_allow_html=True)
 
