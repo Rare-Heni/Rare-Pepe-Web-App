@@ -1151,10 +1151,18 @@ else:
             e1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset</h1>", unsafe_allow_html=True)
             e1.dataframe(df, height=500)
 
-            name_dataframe = "png_df_unweighted_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".png"
-            price = Image.open("04_graphs/" + name_dataframe)
-            e2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of the Unweighted Rare Pepe Index</h1>", unsafe_allow_html=True)
-            e2.image(price)
+            dataframe = "df_unweighted_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+            df = pd.read_csv("03_output_data/" +dataframe)
+            e2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
+            df = df.loc[df['Price_Level'] != 0]
+            df["time"] = pd.to_datetime(df["Date_Index"])
+            df['Price_Level'] = df['Price_Level'].div(df['Price_Level'].iat[0])
+
+            fig_1 = plt.figure()
+            plt.plot('time','Price_Level',data = df, color = "green")
+            with e2:
+                fig_test = mpld3.fig_to_html(fig_1)
+                components.html(fig_test, height=850, width=850)
 
         # Creation of the unweighted price index dataset and graph    
         else:
