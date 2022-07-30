@@ -1342,7 +1342,7 @@ else:
             # show graph
             name_dataframe = "df_gini_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
             df_gini = pd.read_csv("03_output_data/" + name_dataframe)
-            g2.markdown("Graph:")
+            g2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Visualization of the Gini Coefficient</h1>", unsafe_allow_html=True)
             fig_1 = plt.figure()
             x = [0,0.2,0.4,0.6,0.8,1.0]
             df_gini_total = df_gini.groupby(["x"]).mean()
@@ -1457,7 +1457,7 @@ else:
             # show graph
             name_dataframe = "df_gini_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
             df_gini = pd.read_csv("03_output_data/" + name_dataframe)
-            g2.markdown("Graph:")
+            g2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Visualization of the Gini Coefficient</h1>", unsafe_allow_html=True)
             fig_1 = plt.figure()
             x = [0,0.2,0.4,0.6,0.8,1.0]
             df_gini_total = df_gini.groupby(["x"]).mean()
