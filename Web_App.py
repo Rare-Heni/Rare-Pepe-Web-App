@@ -54,7 +54,7 @@ with st.sidebar.form(key = "columns in form"):
     #observation_time = st.selectbox(label = "Period of Time", options = ["All",2016,2017,2018,2019,2020,2021,2022])
     observation_time = "All"
     all_series = ["All"]
-    series_test = list(range(1,38))
+    series_test = list(range(1,37))
     all_series.extend(series_test)
     card_series = st.selectbox(label = "Card Series", options = all_series)
     card_supply = st.radio(label = "Max Supply Card", options = [100, 500,1000])
