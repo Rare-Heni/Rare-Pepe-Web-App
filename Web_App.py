@@ -74,7 +74,7 @@ with st.sidebar.form(key = "columns in form"):
 st.sidebar.subheader("Impressum")
 st.sidebar.caption("This dashboard is a result of the master thesis of Henrik Pitz. If you like the analysis, you can support me with a donation at: 1HKuL7ecSsExU3KAU7qVtVLusUgt7DYHo6. I am working on adding more analysis.")
 
-# Anzeigen der Startseite, wenn keiner der Checkboxen auf der linken Seite ausgewählt sind
+# Frontpage if no method is selected
 if unweighted == False and marketcap_weighted == False and volume_sold == False and dataset_analysis == False and gini_coef == False and benchmark == False:
     
     # Introduction
