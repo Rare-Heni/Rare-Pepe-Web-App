@@ -1062,25 +1062,198 @@ else:
         d1, d2 = st.columns((2, 2))
         d1.caption("Number of Rare Pepes in the Analysis: " + str(len(unique_values)))
         st.markdown("<hr/>", unsafe_allow_html=True)
-
-        # Saving dataframe as csv
-        name_dataframe = "df_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
-        path_to_file = name_dataframe
-        path = Path("03_output_data/" + path_to_file)
-
-    #############################################################
-    # Calculation of the price level
-    # Explanation see above
-    ############################################################# 
-
-        # Checking if file already exists
-        if path.is_file() == True:
-            df_price_level = pd.read_csv ("03_output_data/" + name_dataframe)
+        
+        unique_values = len(unique_values)
+        
+        if unique_values == 0:
+            st.markdown("<h1 style='text-align: center; color: green;font-size:20px;'>No transactions were performed with the selected filters. Please choose another selection!</h1>", unsafe_allow_html=True)
+            st.markdown("<hr/>", unsafe_allow_html=True)
 
         else:
-            if number_transactions != "All" or card_series != "All" or observation_time !="All":
+            # Saving dataframe as csv
+            name_dataframe = "df_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+            path_to_file = name_dataframe
+            path = Path("03_output_data/" + path_to_file)
+
+        #############################################################
+        # Calculation of the price level
+        # Explanation see above
+        ############################################################# 
+
+            # Checking if file already exists
+            if path.is_file() == True:
+                df_price_level = pd.read_csv ("03_output_data/" + name_dataframe)
+
+            else:
+                if number_transactions != "All" or card_series != "All" or observation_time !="All":
+                    column_names = [ "Price_Level", "Date_Index"]
+                    df_price_level = pd.DataFrame(columns = column_names)
+
+                    month = ["01", "02", "03", "04", "05","06","07","08","09","10","11","12"]
+                    year = ["2016", "2017", "2018", "2019", "2020", "2021", "2022"]
+
+                    today = datetime.now()
+                    current_month = today.strftime("%Y-%m")
+
+                    for names in official_rare_pepes:
+                        preisniveau = 0
+                        test = df_total.loc[df_total['Name'] == names]
+                        for y in year:
+
+                            for m in month:
+                                date = y + "-" + m
+                                if date == current_month:
+                                    break
+                                else:
+                                    preisniveau_davor = preisniveau
+                                    test_names = test.loc[test['Date_Index'] == date]
+                                    anzahl = len(test_names)
+
+                                    if anzahl == 0 and preisniveau_davor == 0:
+                                        preisniveau = 0
+                                    if anzahl == 0 and preisniveau_davor !=0:
+                                        preisniveau = preisniveau_davor
+                                    if anzahl != 0:
+                                        preisniveau = test_names["Price in USD"].mean()
+
+                                    df_price_level.loc[df_price_level.shape[0]] = [preisniveau, date]
+
+                    name_dataframe = "df_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+                    df_price_level.to_csv("03_output_data/" + name_dataframe, index = False)
+                    df_price_level = df_price_level.sort_values(by=["Date_Index"], ascending = False)
+
+            df_price_level = df_price_level.sort_values(by=["Date_Index"], ascending = False)
+
+            month = ["01", "02", "03", "04", "05","06","07","08","09","10","11","12"]
+            year = ["2016", "2017", "2018", "2019", "2020", "2021", "2022"]
+
+            # Subset of dataframe when filter ist on
+            if observation_time !="All":
+                year = [str(observation_time)]
+
+            # Update of the current month
+            today = datetime.now()
+            current_month = today.strftime("%Y-%m")
+
+        #############################################################
+        # Calculation of the unweighted price index
+        ############################################################# 
+
+        if unweighted==True and unique_values != 0:
+
+            name_dataframe = "df_unweighted_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+            path_to_file = name_dataframe
+            path = Path("03_output_data/" + path_to_file)
+
+            un1, un2 = st.columns((2, 3)) 
+            un1.subheader("Unweighted Price Index of Rare Pepes")
+            e1, e2 = st.columns((2, 3))
+
+            # Checking if file already exists
+            # if yes show results
+            if path.is_file() == True:
+                df = pd.read_csv("03_output_data/" + name_dataframe)
+                df = df[['Date_Index','Price_Level']]
+                df = df.sort_values(by=["Date_Index"], ascending = False)
+                e1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset</h1>", unsafe_allow_html=True)
+                e1.dataframe(df, height=500)
+
+                dataframe = "df_unweighted_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+                df = pd.read_csv("03_output_data/" +dataframe)
+                e2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Unweighted Rare Pepe Index</h1>", unsafe_allow_html=True)
+                df = df.loc[df['Price_Level'] != 0]
+                df["time"] = pd.to_datetime(df["Date_Index"])
+
+                fig_1 = plt.figure()
+                plt.plot('time','Price_Level',data = df, color = "green")
+                with e2:
+                    fig_test = mpld3.fig_to_html(fig_1)
+                    components.html(fig_test, height=650, width=650)
+
+            # Creation of the unweighted price index dataset and graph    
+            else:
+
+                # Filter by observation
+                if observation_time !="All":
+                    test = df_price_level
+                    test["Year"] = df_price_level["Date_Index"].str.split("-").str[0]
+                    test = test.loc[test['Year'] == str(observation_time)]
+                    df_price_level = test
+
+                # Calculation of the price index
+                df_unweighted_price_level = df_price_level.groupby(["Date_Index"]).sum()
+                df_unweighted_price_level = df_unweighted_price_level.loc[df_unweighted_price_level['Price_Level'] != 0]
+
+                # Save as csv
+                name_dataframe = "df_unweighted_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+                df_unweighted_price_level.to_csv("03_output_data/" + name_dataframe)
+
+                # Show dataframe
+                df = pd.read_csv("03_output_data/" + name_dataframe)
+                df = df[['Date_Index','Price_Level']]
+                df = df.sort_values(by=["Date_Index"], ascending = False)
+                e1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset</h1>", unsafe_allow_html=True)
+                e1.dataframe(df, height=500)
+
+                # show graph
+                dataframe = "df_unweighted_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+                df = pd.read_csv("03_output_data/" +dataframe)
+                e2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Unweighted Rare Pepe Index</h1>", unsafe_allow_html=True)
+                df = df.loc[df['Price_Level'] != 0]
+                df["time"] = pd.to_datetime(df["Date_Index"])
+
+                fig_1 = plt.figure()
+                plt.plot('time','Price_Level',data = df, color = "green")
+                with e2:
+                    fig_test = mpld3.fig_to_html(fig_1)
+                    components.html(fig_test, height=650, width=650)
+
+            st.markdown("<hr/>", unsafe_allow_html=True)   
+
+        #############################################################
+        # Calculation of the market-cap weighted price index
+        ############################################################# 
+
+        if marketcap_weighted == True and unique_values != 0:
+
+            mcap1, mcap2 = st.columns((2, 3)) 
+            mcap1.subheader("Market-Cap Weighted Price Index of Rare Pepes")
+            f1, f2 = st.columns((2, 3))
+
+            name_dataframe = "df_market_cap_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+            path_to_file = name_dataframe
+            path = Path("03_output_data/" + path_to_file)
+
+            # Checking if file already exists
+            # if yes show results
+            if path.is_file() == True:
+                df = pd.read_csv("03_output_data/" + name_dataframe)
+                df = df[['Date_Index','Price_Level']]
+                df = df.sort_values(by=["Date_Index"], ascending = False)
+
+                # show dataframe
+                f1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset</h1>", unsafe_allow_html=True)
+                f1.dataframe(df, height=500)
+
+                # show graph
+                dataframe = "df_market_cap_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+                df = pd.read_csv("03_output_data/" +dataframe)
+                f2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of the Market-Cap Weighted Rare Pepe Index</h1>", unsafe_allow_html=True)
+                df = df.loc[df['Price_Level'] != 0]
+                df["time"] = pd.to_datetime(df["Date_Index"])
+
+                fig_1 = plt.figure()
+                plt.plot('time','Price_Level',data = df, color = "green")
+                with f2:
+                    fig_test = mpld3.fig_to_html(fig_1)
+                    components.html(fig_test, height=650, width=650)
+
+            # Creation of the market weighted price index dataset and graph    
+            else:
+
+                # Creation of dataframes to save the price level
                 column_names = [ "Price_Level", "Date_Index"]
-                df_price_level = pd.DataFrame(columns = column_names)
+                df_price_level_market_cap = pd.DataFrame(columns = column_names)
 
                 month = ["01", "02", "03", "04", "05","06","07","08","09","10","11","12"]
                 year = ["2016", "2017", "2018", "2019", "2020", "2021", "2022"]
@@ -1088,8 +1261,9 @@ else:
                 today = datetime.now()
                 current_month = today.strftime("%Y-%m")
 
+                # Loop over all Rare Pepes
                 for names in official_rare_pepes:
-                    preisniveau = 0
+                    preisniveau_market_cap = 0
                     test = df_total.loc[df_total['Name'] == names]
                     for y in year:
 
@@ -1098,652 +1272,485 @@ else:
                             if date == current_month:
                                 break
                             else:
-                                preisniveau_davor = preisniveau
+                                preisniveau_davor = preisniveau_market_cap
                                 test_names = test.loc[test['Date_Index'] == date]
                                 anzahl = len(test_names)
 
                                 if anzahl == 0 and preisniveau_davor == 0:
-                                    preisniveau = 0
+                                    preisniveau_market_cap = 0
                                 if anzahl == 0 and preisniveau_davor !=0:
-                                    preisniveau = preisniveau_davor
+                                    preisniveau_market_cap = preisniveau_davor
                                 if anzahl != 0:
                                     preisniveau = test_names["Price in USD"].mean()
+                                    supply = test_names["Supply"].mean()
 
-                                df_price_level.loc[df_price_level.shape[0]] = [preisniveau, date]
+                                    # Calculation of the marke capitalization
+                                    preisniveau_market_cap = preisniveau * supply
 
-                name_dataframe = "df_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
-                df_price_level.to_csv("03_output_data/" + name_dataframe, index = False)
-                df_price_level = df_price_level.sort_values(by=["Date_Index"], ascending = False)
+                                # Saving output in dataframe
+                                df_price_level_market_cap.loc[df_price_level_market_cap.shape[0]] = [preisniveau_market_cap, date]
 
-        df_price_level = df_price_level.sort_values(by=["Date_Index"], ascending = False)
+                # Filter by observation time
+                if observation_time !="All":
+                    test = df_price_level_market_cap
+                    test["Year"] = df_price_level_market_cap["Date_Index"].str.split("-").str[0]
+                    test = test.loc[test['Year'] == str(observation_time)]
+                    df_price_level_market_cap = test
 
-        month = ["01", "02", "03", "04", "05","06","07","08","09","10","11","12"]
-        year = ["2016", "2017", "2018", "2019", "2020", "2021", "2022"]
-        
-        # Subset of dataframe when filter ist on
-        if observation_time !="All":
-            year = [str(observation_time)]
+                # Calculation of the market weighted price index
+                df_market_cap = df_price_level_market_cap.groupby(["Date_Index"]).sum()
+                df_market_cap = df_market_cap.loc[df_market_cap['Price_Level'] != 0]
+                df_market_cap = df_market_cap.sort_values(by=["Date_Index"], ascending = False)
 
-        # Update of the current month
-        today = datetime.now()
-        current_month = today.strftime("%Y-%m")
+                name_dataframe = "df_market_cap_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+                df_market_cap.to_csv("03_output_data/" + name_dataframe)
 
-    #############################################################
-    # Calculation of the unweighted price index
-    ############################################################# 
+                # show dataframe
+                df = pd.read_csv("03_output_data/" + name_dataframe)
+                df = df[['Date_Index','Price_Level']]
+                f1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset</h1>", unsafe_allow_html=True)
+                f1.dataframe(df, height=500)
 
-    if unweighted==True:
+                # show graph
+                dataframe = "df_market_cap_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+                df = pd.read_csv("03_output_data/" +dataframe)
+                f2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of the Market-Cap Weighted Rare Pepe Index</h1>", unsafe_allow_html=True)
+                df = df.loc[df['Price_Level'] != 0]
+                df["time"] = pd.to_datetime(df["Date_Index"])
 
-        name_dataframe = "df_unweighted_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
-        path_to_file = name_dataframe
-        path = Path("03_output_data/" + path_to_file)
+                fig_1 = plt.figure()
+                plt.plot('time','Price_Level',data = df, color = "green")
+                with f2:
+                    fig_test = mpld3.fig_to_html(fig_1)
+                    components.html(fig_test, height=650, width=650)
+            st.markdown("<hr/>", unsafe_allow_html=True)
 
-        un1, un2 = st.columns((2, 3)) 
-        un1.subheader("Unweighted Price Index of Rare Pepes")
-        e1, e2 = st.columns((2, 3))
-        
-        # Checking if file already exists
-        # if yes show results
-        if path.is_file() == True:
-            df = pd.read_csv("03_output_data/" + name_dataframe)
-            df = df[['Date_Index','Price_Level']]
-            df = df.sort_values(by=["Date_Index"], ascending = False)
-            e1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset</h1>", unsafe_allow_html=True)
-            e1.dataframe(df, height=500)
+        #############################################################
+        # Visualization of the Gini coefficient
+        ############################################################# 
 
-            dataframe = "df_unweighted_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
-            df = pd.read_csv("03_output_data/" +dataframe)
-            e2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Unweighted Rare Pepe Index</h1>", unsafe_allow_html=True)
-            df = df.loc[df['Price_Level'] != 0]
-            df["time"] = pd.to_datetime(df["Date_Index"])
+        if gini_coef == True and unique_values != 0:
 
-            fig_1 = plt.figure()
-            plt.plot('time','Price_Level',data = df, color = "green")
-            with e2:
-                fig_test = mpld3.fig_to_html(fig_1)
-                components.html(fig_test, height=650, width=650)
+            name_dataframe = "df_gini_list_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+            path_to_file = name_dataframe
+            path = Path("03_output_data/" + path_to_file)
 
-        # Creation of the unweighted price index dataset and graph    
-        else:
-            
-            # Filter by observation
-            if observation_time !="All":
-                test = df_price_level
-                test["Year"] = df_price_level["Date_Index"].str.split("-").str[0]
-                test = test.loc[test['Year'] == str(observation_time)]
-                df_price_level = test
-            
-            # Calculation of the price index
-            df_unweighted_price_level = df_price_level.groupby(["Date_Index"]).sum()
-            df_unweighted_price_level = df_unweighted_price_level.loc[df_unweighted_price_level['Price_Level'] != 0]
+            gini1, gini2 = st.columns((2, 3)) 
+            gini1.subheader("Gini Coefficient of Rare Pepes")
+            g1, g2 = st.columns((2, 3))
 
-            # Save as csv
-            name_dataframe = "df_unweighted_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
-            df_unweighted_price_level.to_csv("03_output_data/" + name_dataframe)
-            
-            # Show dataframe
-            df = pd.read_csv("03_output_data/" + name_dataframe)
-            df = df[['Date_Index','Price_Level']]
-            df = df.sort_values(by=["Date_Index"], ascending = False)
-            e1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset</h1>", unsafe_allow_html=True)
-            e1.dataframe(df, height=500)
-            
-            # show graph
-            dataframe = "df_unweighted_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
-            df = pd.read_csv("03_output_data/" +dataframe)
-            e2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Unweighted Rare Pepe Index</h1>", unsafe_allow_html=True)
-            df = df.loc[df['Price_Level'] != 0]
-            df["time"] = pd.to_datetime(df["Date_Index"])
+            # check if dataframe already exists
+            if path.is_file() == True:
+                df_gini_list = pd.read_csv("03_output_data/" + name_dataframe)
 
-            fig_1 = plt.figure()
-            plt.plot('time','Price_Level',data = df, color = "green")
-            with e2:
-                fig_test = mpld3.fig_to_html(fig_1)
-                components.html(fig_test, height=650, width=650)
-            
-        st.markdown("<hr/>", unsafe_allow_html=True)   
+                # show dataframe
+                g1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset of Individual Gini-Coefficients</h1>", unsafe_allow_html=True)
+                df_gini_list = df_gini_list[['Name','gini']]
+                g1.dataframe(df_gini_list)
+                total_gini = df_gini_list["gini"].mean()
+                total_gini = round(total_gini, 3)      
 
-    #############################################################
-    # Calculation of the market-cap weighted price index
-    ############################################################# 
-
-    if marketcap_weighted == True:
-        
-        mcap1, mcap2 = st.columns((2, 3)) 
-        mcap1.subheader("Market-Cap Weighted Price Index of Rare Pepes")
-        f1, f2 = st.columns((2, 3))
-        
-        name_dataframe = "df_market_cap_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
-        path_to_file = name_dataframe
-        path = Path("03_output_data/" + path_to_file)
-
-        # Checking if file already exists
-        # if yes show results
-        if path.is_file() == True:
-            df = pd.read_csv("03_output_data/" + name_dataframe)
-            df = df[['Date_Index','Price_Level']]
-            df = df.sort_values(by=["Date_Index"], ascending = False)
-            
-            # show dataframe
-            f1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset</h1>", unsafe_allow_html=True)
-            f1.dataframe(df, height=500)
-            
-            # show graph
-            dataframe = "df_market_cap_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
-            df = pd.read_csv("03_output_data/" +dataframe)
-            f2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of the Market-Cap Weighted Rare Pepe Index</h1>", unsafe_allow_html=True)
-            df = df.loc[df['Price_Level'] != 0]
-            df["time"] = pd.to_datetime(df["Date_Index"])
-
-            fig_1 = plt.figure()
-            plt.plot('time','Price_Level',data = df, color = "green")
-            with f2:
-                fig_test = mpld3.fig_to_html(fig_1)
-                components.html(fig_test, height=650, width=650)
-            
-        # Creation of the market weighted price index dataset and graph    
-        else:
-
-            # Creation of dataframes to save the price level
-            column_names = [ "Price_Level", "Date_Index"]
-            df_price_level_market_cap = pd.DataFrame(columns = column_names)
-
-            month = ["01", "02", "03", "04", "05","06","07","08","09","10","11","12"]
-            year = ["2016", "2017", "2018", "2019", "2020", "2021", "2022"]
-
-            today = datetime.now()
-            current_month = today.strftime("%Y-%m")
-
-            # Loop over all Rare Pepes
-            for names in official_rare_pepes:
-                preisniveau_market_cap = 0
-                test = df_total.loc[df_total['Name'] == names]
-                for y in year:
-
-                    for m in month:
-                        date = y + "-" + m
-                        if date == current_month:
-                            break
-                        else:
-                            preisniveau_davor = preisniveau_market_cap
-                            test_names = test.loc[test['Date_Index'] == date]
-                            anzahl = len(test_names)
-
-                            if anzahl == 0 and preisniveau_davor == 0:
-                                preisniveau_market_cap = 0
-                            if anzahl == 0 and preisniveau_davor !=0:
-                                preisniveau_market_cap = preisniveau_davor
-                            if anzahl != 0:
-                                preisniveau = test_names["Price in USD"].mean()
-                                supply = test_names["Supply"].mean()
-
-                                # Calculation of the marke capitalization
-                                preisniveau_market_cap = preisniveau * supply
-
-                            # Saving output in dataframe
-                            df_price_level_market_cap.loc[df_price_level_market_cap.shape[0]] = [preisniveau_market_cap, date]
-                            
-            # Filter by observation time
-            if observation_time !="All":
-                test = df_price_level_market_cap
-                test["Year"] = df_price_level_market_cap["Date_Index"].str.split("-").str[0]
-                test = test.loc[test['Year'] == str(observation_time)]
-                df_price_level_market_cap = test
-            
-            # Calculation of the market weighted price index
-            df_market_cap = df_price_level_market_cap.groupby(["Date_Index"]).sum()
-            df_market_cap = df_market_cap.loc[df_market_cap['Price_Level'] != 0]
-            df_market_cap = df_market_cap.sort_values(by=["Date_Index"], ascending = False)
-            
-            name_dataframe = "df_market_cap_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
-            df_market_cap.to_csv("03_output_data/" + name_dataframe)
-
-            # show dataframe
-            df = pd.read_csv("03_output_data/" + name_dataframe)
-            df = df[['Date_Index','Price_Level']]
-            f1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset</h1>", unsafe_allow_html=True)
-            f1.dataframe(df, height=500)
-        
-            # show graph
-            dataframe = "df_market_cap_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
-            df = pd.read_csv("03_output_data/" +dataframe)
-            f2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of the Market-Cap Weighted Rare Pepe Index</h1>", unsafe_allow_html=True)
-            df = df.loc[df['Price_Level'] != 0]
-            df["time"] = pd.to_datetime(df["Date_Index"])
-
-            fig_1 = plt.figure()
-            plt.plot('time','Price_Level',data = df, color = "green")
-            with f2:
-                fig_test = mpld3.fig_to_html(fig_1)
-                components.html(fig_test, height=650, width=650)
-        st.markdown("<hr/>", unsafe_allow_html=True)
-
-    #############################################################
-    # Visualization of the Gini coefficient
-    ############################################################# 
-
-    if gini_coef == True:
-        
-        name_dataframe = "df_gini_list_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
-        path_to_file = name_dataframe
-        path = Path("03_output_data/" + path_to_file)
-
-        gini1, gini2 = st.columns((2, 3)) 
-        gini1.subheader("Gini Coefficient of Rare Pepes")
-        g1, g2 = st.columns((2, 3))
-
-        # check if dataframe already exists
-        if path.is_file() == True:
-            df_gini_list = pd.read_csv("03_output_data/" + name_dataframe)
-
-            # show dataframe
-            g1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset of Individual Gini-Coefficients</h1>", unsafe_allow_html=True)
-            df_gini_list = df_gini_list[['Name','gini']]
-            g1.dataframe(df_gini_list)
-            total_gini = df_gini_list["gini"].mean()
-            total_gini = round(total_gini, 3)      
-
-            # show graph
-            name_dataframe = "df_gini_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
-            df_gini = pd.read_csv("03_output_data/" + name_dataframe)
-            g2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Visualization of the Gini Coefficient</h1>", unsafe_allow_html=True)
-            fig_1 = plt.figure()
-            x = [0,0.2,0.4,0.6,0.8,1.0]
-            df_gini_total = df_gini.groupby(["x"]).mean()
-            df_gini_total.reset_index()
-            
-            plt.plot(x,df_gini_total["points"],"--o", color = "green")
-            plt.plot(x,x,"--o", color = "black")
-            with g2:
-                fig_test = mpld3.fig_to_html(fig_1)
-                components.html(fig_test, height=650, width=650)
-            g1.write("The Gini-Coefficient is the most well-known measure of inequality. A Gini-Coefficient of zero means all holders have the same amount of cards. A Gini-Coefficient of one means one holder has all cards. The lower the Gini coefficient, the more equal the holders are. The current total Gini-Coefficient equals: " + str(total_gini)+ ".")
-            
-        # Calculation of the Gini coefficient
-        # Explanation see above
-        
-        else:
-            column_names = ["Name", "address", "quantity", "percentage"]
-            df_holders = pd.DataFrame(columns = column_names)
-
-            column_names = ["Name", "x", "points"]
-            df_gini = pd.DataFrame(columns = column_names)
-
-            column_names = ["Name", "gini"]
-            df_gini_list = pd.DataFrame(columns = column_names)
-
-            for names in official_rare_pepes:
-                page_counter = 100
-                page = 1
-                
-                while page_counter > 0:
-
-                    url = "https://xchain.io/api/holders/" + names + "/" + str(page) + "/100"
-                    headers = {'content-type': 'application/json'}
-                    auth = HTTPBasicAuth('rpc', '1234')
-
-                    response= requests.post(url, headers=headers, auth=auth)
-                    response = response.json()
-
-                    page = page + 1
-                    page_counter = 0
-
-                    for data in response["data"]:
-                        page_counter = page_counter + 1
-
-                        if "BURN" in data["address"]:
-                            continue
-
-                        elif "Burn" in data["address"]:
-                            continue
-
-                        else:
-                            address = data["address"]
-                            quantity = float(data["quantity"])
-                            percentage = data["percentage"]     
-
-                            df_holders.loc[df_holders.shape[0]] = [names, address, quantity, percentage]
-
-                holders_name = df_holders.loc[df_holders['Name'] == names]
-                df_holders_sorted = holders_name["quantity"]
-                df_holders_sorted = df_holders_sorted.sort_values()
-                quantity = len(df_holders_sorted)
-                quartiles = round(quantity / 5)
-
-                def gini(list_of_values):
-                    sorted_list = sorted(list_of_values)
-                    height, area = 0, 0
-                    for value in sorted_list:
-                        height += value
-                        area += height - value / 2.
-                    fair_area = height * len(list_of_values) / 2.
-                    try: 
-                        return (fair_area - area) / fair_area
-                    except ZeroDivisionError:
-                        errors.loc[errors.shape[0]] = [names]
-                        return nan
-
-                gini_card = round(gini(df_holders_sorted),3)
-
-                df_gini_list.loc[df_gini_list.shape[0]] = [names, gini_card]
-                
-                # Method to see all gini coefficients
-                first_q = df_holders_sorted[:(quartiles)].sum() / df_holders_sorted.sum()
-                second_q = df_holders_sorted[:(quartiles*2)].sum() / df_holders_sorted.sum()
-                third_q = df_holders_sorted[:(quartiles*3)].sum() / df_holders_sorted.sum()
-                fourth_q = df_holders_sorted[:(quartiles*4)].sum() / df_holders_sorted.sum()
-                fifth_q = df_holders_sorted.sum() / df_holders_sorted.sum()
-
-                points = [0,first_q,second_q,third_q,fourth_q,fifth_q]
+                # show graph
+                name_dataframe = "df_gini_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+                df_gini = pd.read_csv("03_output_data/" + name_dataframe)
+                g2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Visualization of the Gini Coefficient</h1>", unsafe_allow_html=True)
+                fig_1 = plt.figure()
                 x = [0,0.2,0.4,0.6,0.8,1.0]
-                df = pd.DataFrame()
-                df["Name"] = str(names)
-                df["x"] = x
-                df["points"] = points
+                df_gini_total = df_gini.groupby(["x"]).mean()
+                df_gini_total.reset_index()
 
-                df_gini = df_gini.append(df, ignore_index=True)
+                plt.plot(x,df_gini_total["points"],"--o", color = "green")
+                plt.plot(x,x,"--o", color = "black")
+                with g2:
+                    fig_test = mpld3.fig_to_html(fig_1)
+                    components.html(fig_test, height=650, width=650)
+                g1.write("The Gini-Coefficient is the most well-known measure of inequality. A Gini-Coefficient of zero means all holders have the same amount of cards. A Gini-Coefficient of one means one holder has all cards. The lower the Gini coefficient, the more equal the holders are. The current total Gini-Coefficient equals: " + str(total_gini)+ ".")
 
-            # Save output as csv
-            df_gini_list_name = "df_gini_list_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
-            df_gini_list.to_csv("03_output_data/" + df_gini_list_name, index = False)
+            # Calculation of the Gini coefficient
+            # Explanation see above
 
-            # Show dataframe of Gini Coefficients
-            g1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset of Individual Gini-Coefficients</h1>", unsafe_allow_html=True)
-            df_gini_list = df_gini_list[['Name','gini']]
-            g1.dataframe(df_gini_list)
-            total_gini = df_gini_list["gini"].mean()
-            total_gini = round(total_gini, 3)        
+            else:
+                column_names = ["Name", "address", "quantity", "percentage"]
+                df_holders = pd.DataFrame(columns = column_names)
 
-            # All values per quantile
-            df_gini_name = "df_gini_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
-            df_gini.to_csv("03_output_data/" + df_gini_name, index = False)
+                column_names = ["Name", "x", "points"]
+                df_gini = pd.DataFrame(columns = column_names)
 
-            # show graph
-            name_dataframe = "df_gini_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
-            df_gini = pd.read_csv("03_output_data/" + name_dataframe)
-            g2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Visualization of the Gini Coefficient</h1>", unsafe_allow_html=True)
-            fig_1 = plt.figure()
-            x = [0,0.2,0.4,0.6,0.8,1.0]
-            df_gini_total = df_gini.groupby(["x"]).mean()
-            df_gini_total.reset_index()
-            
-            plt.plot(x,df_gini_total["points"],"--o", color = "green")
-            plt.plot(x,x,"--o", color = "black")
-            with g2:
-                fig_test = mpld3.fig_to_html(fig_1)
-                components.html(fig_test, height=650, width=650)
-                
-            g1.write("The Gini-Coefficient is the most well-known measure of inequality. A Gini-Coefficient of zero means all holders have the same amount of cards. A Gini-Coefficient of one means one holder has all cards. The lower the Gini coefficient, the more equal the holders are. The current total Gini-Coefficient equals: " + str(total_gini)+ ".")
-        st.markdown("<hr/>", unsafe_allow_html=True)
+                column_names = ["Name", "gini"]
+                df_gini_list = pd.DataFrame(columns = column_names)
 
-    #############################################################
-    # Calculation of the volume sold
-    ############################################################# 
+                for names in official_rare_pepes:
+                    page_counter = 100
+                    page = 1
 
-    if volume_sold == True:
+                    while page_counter > 0:
 
-        vo1, vo2 = st.columns((2, 3)) 
-        vo1.subheader("Volume sold of Rare Pepes")
-        vo1.write("(Total Volume sold over Time Period in USD)")
-        h1, h2 = st.columns((2, 3))
+                        url = "https://xchain.io/api/holders/" + names + "/" + str(page) + "/100"
+                        headers = {'content-type': 'application/json'}
+                        auth = HTTPBasicAuth('rpc', '1234')
 
-        name_dataframe = "df_volume_sold_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
-        path_to_file = name_dataframe
-        path = Path("03_output_data/" + path_to_file)
+                        response= requests.post(url, headers=headers, auth=auth)
+                        response = response.json()
 
-        # Checking if file already exists 
-        # If yes show results
-        if path.is_file() == True:
-            df = pd.read_csv("03_output_data/" + name_dataframe)
-            df = df[['Date','Volume sold']]
-            h1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset</h1>", unsafe_allow_html=True)
-            h1.dataframe(df, height=500)
+                        page = page + 1
+                        page_counter = 0
 
-            # Show graph
-            dataframe = "df_volume_sold_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
-            df = pd.read_csv("03_output_data/" +dataframe)
-            h2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Volume sold over Time</h1>", unsafe_allow_html=True)
-            df = df.loc[df['Volume sold'] != 0]
-            df["time"] = pd.to_datetime(df["Date"])
-            
-            fig_1 = plt.figure()
-            plt.plot('time','Volume sold',data = df, color = "green")
-            with h2:
-                fig_test = mpld3.fig_to_html(fig_1)
-                components.html(fig_test, height=650, width=650)
-        
+                        for data in response["data"]:
+                            page_counter = page_counter + 1
+
+                            if "BURN" in data["address"]:
+                                continue
+
+                            elif "Burn" in data["address"]:
+                                continue
+
+                            else:
+                                address = data["address"]
+                                quantity = float(data["quantity"])
+                                percentage = data["percentage"]     
+
+                                df_holders.loc[df_holders.shape[0]] = [names, address, quantity, percentage]
+
+                    holders_name = df_holders.loc[df_holders['Name'] == names]
+                    df_holders_sorted = holders_name["quantity"]
+                    df_holders_sorted = df_holders_sorted.sort_values()
+                    quantity = len(df_holders_sorted)
+                    quartiles = round(quantity / 5)
+
+                    def gini(list_of_values):
+                        sorted_list = sorted(list_of_values)
+                        height, area = 0, 0
+                        for value in sorted_list:
+                            height += value
+                            area += height - value / 2.
+                        fair_area = height * len(list_of_values) / 2.
+                        try: 
+                            return (fair_area - area) / fair_area
+                        except ZeroDivisionError:
+                            errors.loc[errors.shape[0]] = [names]
+                            return nan
+
+                    gini_card = round(gini(df_holders_sorted),3)
+
+                    df_gini_list.loc[df_gini_list.shape[0]] = [names, gini_card]
+
+                    # Method to see all gini coefficients
+                    first_q = df_holders_sorted[:(quartiles)].sum() / df_holders_sorted.sum()
+                    second_q = df_holders_sorted[:(quartiles*2)].sum() / df_holders_sorted.sum()
+                    third_q = df_holders_sorted[:(quartiles*3)].sum() / df_holders_sorted.sum()
+                    fourth_q = df_holders_sorted[:(quartiles*4)].sum() / df_holders_sorted.sum()
+                    fifth_q = df_holders_sorted.sum() / df_holders_sorted.sum()
+
+                    points = [0,first_q,second_q,third_q,fourth_q,fifth_q]
+                    x = [0,0.2,0.4,0.6,0.8,1.0]
+                    df = pd.DataFrame()
+                    df["Name"] = str(names)
+                    df["x"] = x
+                    df["points"] = points
+
+                    df_gini = df_gini.append(df, ignore_index=True)
+
+                # Save output as csv
+                df_gini_list_name = "df_gini_list_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+                df_gini_list.to_csv("03_output_data/" + df_gini_list_name, index = False)
+
+                # Show dataframe of Gini Coefficients
+                g1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset of Individual Gini-Coefficients</h1>", unsafe_allow_html=True)
+                df_gini_list = df_gini_list[['Name','gini']]
+                g1.dataframe(df_gini_list)
+                total_gini = df_gini_list["gini"].mean()
+                total_gini = round(total_gini, 3)        
+
+                # All values per quantile
+                df_gini_name = "df_gini_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+                df_gini.to_csv("03_output_data/" + df_gini_name, index = False)
+
+                # show graph
+                name_dataframe = "df_gini_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+                df_gini = pd.read_csv("03_output_data/" + name_dataframe)
+                g2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Visualization of the Gini Coefficient</h1>", unsafe_allow_html=True)
+                fig_1 = plt.figure()
+                x = [0,0.2,0.4,0.6,0.8,1.0]
+                df_gini_total = df_gini.groupby(["x"]).mean()
+                df_gini_total.reset_index()
+
+                plt.plot(x,df_gini_total["points"],"--o", color = "green")
+                plt.plot(x,x,"--o", color = "black")
+                with g2:
+                    fig_test = mpld3.fig_to_html(fig_1)
+                    components.html(fig_test, height=650, width=650)
+
+                g1.write("The Gini-Coefficient is the most well-known measure of inequality. A Gini-Coefficient of zero means all holders have the same amount of cards. A Gini-Coefficient of one means one holder has all cards. The lower the Gini coefficient, the more equal the holders are. The current total Gini-Coefficient equals: " + str(total_gini)+ ".")
+            st.markdown("<hr/>", unsafe_allow_html=True)
+
+        #############################################################
         # Calculation of the volume sold
-        else:
+        ############################################################# 
+
+        if volume_sold == True and unique_values != 0:
+
+            vo1, vo2 = st.columns((2, 3)) 
+            vo1.subheader("Volume sold of Rare Pepes")
+            vo1.write("(Total Volume sold over Time Period in USD)")
+            h1, h2 = st.columns((2, 3))
+
+            name_dataframe = "df_volume_sold_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+            path_to_file = name_dataframe
+            path = Path("03_output_data/" + path_to_file)
+
+            # Checking if file already exists 
+            # If yes show results
+            if path.is_file() == True:
+                df = pd.read_csv("03_output_data/" + name_dataframe)
+                df = df[['Date','Volume sold']]
+                h1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset</h1>", unsafe_allow_html=True)
+                h1.dataframe(df, height=500)
+
+                # Show graph
+                dataframe = "df_volume_sold_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+                df = pd.read_csv("03_output_data/" +dataframe)
+                h2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Volume sold over Time</h1>", unsafe_allow_html=True)
+                df = df.loc[df['Volume sold'] != 0]
+                df["time"] = pd.to_datetime(df["Date"])
+
+                fig_1 = plt.figure()
+                plt.plot('time','Volume sold',data = df, color = "green")
+                with h2:
+                    fig_test = mpld3.fig_to_html(fig_1)
+                    components.html(fig_test, height=650, width=650)
+
+            # Calculation of the volume sold
+            else:
+
+                # Filter by observation time
+                if observation_time !="All":
+                    test = df_total
+                    test["Year"] = df_total["Date_Index"].str.split("-").str[0]
+                    test = test.loc[test['Year'] == str(observation_time)]
+                    df_total = test
+
+                # Creation of a dictionary to add volume
+                dict_total = {}
+
+                # Calculation of the volume sold by month
+                for ind in df_total.index:
+                    price = df_total["Price in USD"][ind]
+                    date = df_total["Date_Index"][ind]
+
+                    if date in dict_total.keys():
+                        dict_total[date] += price
+                    else:
+                        dict_total[date] = price
+
+                data_items = dict_total.items()
+                data_list = list(data_items)
+
+                df_new_total = pd.DataFrame(data_list)
+                df_new_total = df_new_total.rename(columns={0: 'Date', 1: 'Volume sold'})
+                df_new_total = df_new_total.sort_values(by=["Date"], ascending = False)
+
+                # Save dataframe as csv
+                name_dataframe = "df_volume_sold_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+                df_new_total.to_csv("03_output_data/" + name_dataframe, index = False)
+
+                # Show dataframe
+                df = pd.read_csv("03_output_data/" + name_dataframe)
+                df_test = df[['Date','Volume sold']]
+                h1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset</h1>", unsafe_allow_html=True)
+                h1.dataframe(df_test, height=500)
+
+                # Show graph
+                dataframe = "df_volume_sold_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+                df = pd.read_csv("03_output_data/" +dataframe)
+                h2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Volume sold over Time</h1>", unsafe_allow_html=True)
+                df = df.loc[df['Volume sold'] != 0]
+                df["time"] = pd.to_datetime(df["Date"])
+
+                fig_1 = plt.figure()
+                plt.plot('time','Volume sold',data = df, color = "green")
+                with h2:
+                    fig_test = mpld3.fig_to_html(fig_1)
+                    components.html(fig_test, height=650, width=650)
+            st.markdown("<hr/>", unsafe_allow_html=True)
+
+        #############################################################
+        # Comparison with indices
+        #############################################################
+
+        # Missing selection of benchmark index
+        if benchmark == True and bitcoin_index == False and xcp_index == False and pepecash_index == False and nasdaq_index == False:
+            st.markdown("<h1 style='text-align: center; color: green;font-size:20px;'>Please select a benchmark index!</h1>", unsafe_allow_html=True)
+            st.markdown("<hr/>", unsafe_allow_html=True)
+
+        # Selection for benchmark index
+        if benchmark == True and unique_values != 0:
+
+            if bitcoin_index == True:
+
+                bi1, bi2 = st.columns((2, 3)) 
+                bi1.subheader("Benchmark Rare Pepe Index - Bitcoin")
+                bi1.write("(Cumulative performance with 1 USD Dollar Investment)")
+                i1, i2 = st.columns((2, 2))
+
+                # Import Bitcoin data
+                df = pd.read_csv("02_input_data/" + "_bitcoin-usd.csv")
+                df_test = df[['timestamp','close']]
+                df_test['close'] = df_test['close'].div(df_test['close'].iat[0])
+                df_test["time"] = pd.to_datetime(df_test["timestamp"],unit='s')
+                df_test.rename(columns={"close":"Price in USD"},inplace=True)
+
+                 # Show graph Bitcoin
+                i2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Bitcoin</h1>", unsafe_allow_html=True)
+                fig = plt.figure()
+                plt.plot('time','Price in USD',data = df_test, color = "green")
+                with i2:
+                    fig_html = mpld3.fig_to_html(fig)
+                    components.html(fig_html, height=650, width=650)
+
+                # Show graph Rare Pepe
+                dataframe = "df_unweighted_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+                df = pd.read_csv("03_output_data/" +dataframe)
+                i1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
+                df = df.loc[df['Price_Level'] != 0]
+                df["time"] = pd.to_datetime(df["Date_Index"])
+                df['Price_Level'] = df['Price_Level'].div(df['Price_Level'].iat[0])
+
+                fig_1 = plt.figure()
+                plt.plot('time','Price_Level',data = df, color = "green")
+                with i1:
+                    fig_test = mpld3.fig_to_html(fig_1)
+                    components.html(fig_test, height=650, width=650)
+                st.markdown("<hr/>", unsafe_allow_html=True)
+
+            if xcp_index == True and unique_values != 0:
+
+                xcp1, xc2 = st.columns((2, 3)) 
+                xcp1.subheader("Benchmark Rare Pepe Index - XCP")
+                xcp1.write("(Cumulative performance with 1 USD Dollar Investment)")
+                j1, j2 = st.columns((2, 2))
+
+                # Import XCP data
+                df = pd.read_csv("02_input_data/" + "_xcp-usd.csv")
+                df_test = df[['timestamp','close']]
+                df_test['close'] = df_test['close'].div(df_test['close'].iat[0])
+                df_test["time"] = pd.to_datetime(df_test["timestamp"],unit='s')
+                df_test.rename(columns={"close":"Price in USD"},inplace=True)
+
+                 # Show graph XCP
+                j2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of XCP</h1>", unsafe_allow_html=True)
+                fig = plt.figure()
+                plt.plot('time','Price in USD',data = df_test, color = "green")
+                with j2:
+                    fig_html = mpld3.fig_to_html(fig)
+                    components.html(fig_html, height=650, width=650)
+
+                # Show graph Rare Pepe
+                dataframe = "df_unweighted_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+                df = pd.read_csv("03_output_data/" +dataframe)
+                j1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
+                df = df.loc[df['Price_Level'] != 0]
+                df["time"] = pd.to_datetime(df["Date_Index"])
+                df['Price_Level'] = df['Price_Level'].div(df['Price_Level'].iat[0])
+
+                fig_1 = plt.figure()
+                plt.plot('time','Price_Level',data = df, color = "green")
+                with j1:
+                    fig_test = mpld3.fig_to_html(fig_1)
+                    components.html(fig_test, height=650, width=650)
+                st.markdown("<hr/>", unsafe_allow_html=True)
+
+            if pepecash_index == True and unique_values != 0:
+
+                pepe1, pepe2 = st.columns((2, 3)) 
+                pepe1.subheader("Benchmark Rare Pepe Index - Pepe Cash")
+                pepe1.write("(Cumulative performance with 1 USD Dollar Investment)")
+                k1, k2 = st.columns((2, 2))
+
+                # Import Pepe Cash data
+                df = pd.read_csv("02_input_data/" + "_pepecash-usd.csv")
+                df_test = df[['timestamp','close']]
+                df_test['close'] = df_test['close'].div(df_test['close'].iat[0])
+                df_test["time"] = pd.to_datetime(df_test["timestamp"],unit='s')
+                df_test.rename(columns={"close":"Price in USD"},inplace=True)
+
+                 # Show graph Pepe Cash
+                k2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Pepe Cash</h1>", unsafe_allow_html=True)
+                fig = plt.figure()
+                plt.plot('time','Price in USD',data = df_test, color = "green")
+                with k2:
+                    fig_html = mpld3.fig_to_html(fig)
+                    components.html(fig_html, height=650, width=650)
+
+                # Show graph Rare Pepe
+                dataframe = "df_unweighted_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+                df = pd.read_csv("03_output_data/" +dataframe)
+                k1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
+                df = df.loc[df['Price_Level'] != 0]
+                df["time"] = pd.to_datetime(df["Date_Index"])
+                df['Price_Level'] = df['Price_Level'].div(df['Price_Level'].iat[0])
+
+                fig_1 = plt.figure()
+                plt.plot('time','Price_Level',data = df, color = "green")
+                with k1:
+                    fig_test = mpld3.fig_to_html(fig_1)
+                    components.html(fig_test, height=650, width=650)
+                st.markdown("<hr/>", unsafe_allow_html=True)
+
+            if nasdaq_index == True and unique_values != 0:
+
+                nas1, nas2 = st.columns((2, 3)) 
+                nas1.subheader("Benchmark Rare Pepe Index - NASDAQ")
+                nas1.write("(Cumulative performance with 1 USD Dollar Investment)")
+                l1, l2 = st.columns((2, 2))
+
+                # Import NASDAQ data
+                df = pd.read_csv("02_input_data/" + "_nasdaq.csv")
+                df_test = df[['timestamp','close']]
+                df_test['close'] = df_test['close'].div(df_test['close'].iat[0])
+                df_test["time"] = pd.to_datetime(df_test["timestamp"],unit='s')
+                df_test.rename(columns={"close":"Price in USD"},inplace=True)
+
+                 # Show graph NASDAQ
+                l2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of NASDAQ</h1>", unsafe_allow_html=True)
+                fig = plt.figure()
+                plt.plot('time','Price in USD',data = df_test, color = "green")
+                with l2:
+                    fig_html = mpld3.fig_to_html(fig)
+                    components.html(fig_html, height=650, width=650)
+
+                # Show graph Rare Pepe
+                dataframe = "df_unweighted_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
+                df = pd.read_csv("03_output_data/" +dataframe)
+                l1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
+                df = df.loc[df['Price_Level'] != 0]
+                df["time"] = pd.to_datetime(df["Date_Index"])
+                df['Price_Level'] = df['Price_Level'].div(df['Price_Level'].iat[0])
+
+                fig_1 = plt.figure()
+                plt.plot('time','Price_Level',data = df, color = "green")
+                with l1:
+                    fig_test = mpld3.fig_to_html(fig_1)
+                    components.html(fig_test, height=650, width=650)
+
+                st.markdown("<hr/>", unsafe_allow_html=True)
+
+        # Show final dataset
+        if dataset_analysis == True and unique_values != 0:
 
             # Filter by observation time
             if observation_time !="All":
                 test = df_total
                 test["Year"] = df_total["Date_Index"].str.split("-").str[0]
                 test = test.loc[test['Year'] == str(observation_time)]
-                df_total = test
-            
-            # Creation of a dictionary to add volume
-            dict_total = {}
+                df_total_time = test
+            else:
+                df_total_time = df_total
 
-            # Calculation of the volume sold by month
-            for ind in df_total.index:
-                price = df_total["Price in USD"][ind]
-                date = df_total["Date_Index"][ind]
-
-                if date in dict_total.keys():
-                    dict_total[date] += price
-                else:
-                    dict_total[date] = price
-
-            data_items = dict_total.items()
-            data_list = list(data_items)
-
-            df_new_total = pd.DataFrame(data_list)
-            df_new_total = df_new_total.rename(columns={0: 'Date', 1: 'Volume sold'})
-            df_new_total = df_new_total.sort_values(by=["Date"], ascending = False)
-            
-            # Save dataframe as csv
-            name_dataframe = "df_volume_sold_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
-            df_new_total.to_csv("03_output_data/" + name_dataframe, index = False)
-
-            # Show dataframe
-            df = pd.read_csv("03_output_data/" + name_dataframe)
-            df_test = df[['Date','Volume sold']]
-            h1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset</h1>", unsafe_allow_html=True)
-            h1.dataframe(df_test, height=500)
-
-            # Show graph
-            dataframe = "df_volume_sold_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
-            df = pd.read_csv("03_output_data/" +dataframe)
-            h2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Volume sold over Time</h1>", unsafe_allow_html=True)
-            df = df.loc[df['Volume sold'] != 0]
-            df["time"] = pd.to_datetime(df["Date"])
-            
-            fig_1 = plt.figure()
-            plt.plot('time','Volume sold',data = df, color = "green")
-            with h2:
-                fig_test = mpld3.fig_to_html(fig_1)
-                components.html(fig_test, height=650, width=650)
-        st.markdown("<hr/>", unsafe_allow_html=True)
-
-    #############################################################
-    # Comparison with indices
-    #############################################################
-    
-    # Missing selection of benchmark index
-    if benchmark == True and bitcoin_index == False and xcp_index == False and pepecash_index == False and nasdaq_index == False:
-        st.markdown("<h1 style='text-align: center; color: green;font-size:20px;'>Please select a benchmark index!</h1>", unsafe_allow_html=True)
-        st.markdown("<hr/>", unsafe_allow_html=True)
-    
-    # Selection for benchmark index
-    if benchmark == True:
-
-        if bitcoin_index == True:
-
-            bi1, bi2 = st.columns((2, 3)) 
-            bi1.subheader("Benchmark Rare Pepe Index - Bitcoin")
-            bi1.write("(Cumulative performance with 1 USD Dollar Investment)")
-            i1, i2 = st.columns((2, 2))
-
-            # Import Bitcoin data
-            df = pd.read_csv("02_input_data/" + "_bitcoin-usd.csv")
-            df_test = df[['timestamp','close']]
-            df_test['close'] = df_test['close'].div(df_test['close'].iat[0])
-            df_test["time"] = pd.to_datetime(df_test["timestamp"],unit='s')
-            df_test.rename(columns={"close":"Price in USD"},inplace=True)
-
-             # Show graph Bitcoin
-            i2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Bitcoin</h1>", unsafe_allow_html=True)
-            fig = plt.figure()
-            plt.plot('time','Price in USD',data = df_test, color = "green")
-            with i2:
-                fig_html = mpld3.fig_to_html(fig)
-                components.html(fig_html, height=650, width=650)
-
-            # Show graph Rare Pepe
-            dataframe = "df_unweighted_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
-            df = pd.read_csv("03_output_data/" +dataframe)
-            i1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
-            df = df.loc[df['Price_Level'] != 0]
-            df["time"] = pd.to_datetime(df["Date_Index"])
-            df['Price_Level'] = df['Price_Level'].div(df['Price_Level'].iat[0])
-
-            fig_1 = plt.figure()
-            plt.plot('time','Price_Level',data = df, color = "green")
-            with i1:
-                fig_test = mpld3.fig_to_html(fig_1)
-                components.html(fig_test, height=650, width=650)
+            # Show total transactions
+            st.subheader("Dataset ")
+            st.write("Number of Transactions in the Analysis: " + str(len(df_total_time)))
+            st.dataframe(df_total_time)
             st.markdown("<hr/>", unsafe_allow_html=True)
-
-        if xcp_index == True:
-
-            xcp1, xc2 = st.columns((2, 3)) 
-            xcp1.subheader("Benchmark Rare Pepe Index - XCP")
-            xcp1.write("(Cumulative performance with 1 USD Dollar Investment)")
-            j1, j2 = st.columns((2, 2))
-
-            # Import XCP data
-            df = pd.read_csv("02_input_data/" + "_xcp-usd.csv")
-            df_test = df[['timestamp','close']]
-            df_test['close'] = df_test['close'].div(df_test['close'].iat[0])
-            df_test["time"] = pd.to_datetime(df_test["timestamp"],unit='s')
-            df_test.rename(columns={"close":"Price in USD"},inplace=True)
-
-             # Show graph XCP
-            j2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of XCP</h1>", unsafe_allow_html=True)
-            fig = plt.figure()
-            plt.plot('time','Price in USD',data = df_test, color = "green")
-            with j2:
-                fig_html = mpld3.fig_to_html(fig)
-                components.html(fig_html, height=650, width=650)
-
-            # Show graph Rare Pepe
-            dataframe = "df_unweighted_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
-            df = pd.read_csv("03_output_data/" +dataframe)
-            j1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
-            df = df.loc[df['Price_Level'] != 0]
-            df["time"] = pd.to_datetime(df["Date_Index"])
-            df['Price_Level'] = df['Price_Level'].div(df['Price_Level'].iat[0])
-
-            fig_1 = plt.figure()
-            plt.plot('time','Price_Level',data = df, color = "green")
-            with j1:
-                fig_test = mpld3.fig_to_html(fig_1)
-                components.html(fig_test, height=650, width=650)
-            st.markdown("<hr/>", unsafe_allow_html=True)
-
-        if pepecash_index == True:
-
-            pepe1, pepe2 = st.columns((2, 3)) 
-            pepe1.subheader("Benchmark Rare Pepe Index - Pepe Cash")
-            pepe1.write("(Cumulative performance with 1 USD Dollar Investment)")
-            k1, k2 = st.columns((2, 2))
-
-            # Import Pepe Cash data
-            df = pd.read_csv("02_input_data/" + "_pepecash-usd.csv")
-            df_test = df[['timestamp','close']]
-            df_test['close'] = df_test['close'].div(df_test['close'].iat[0])
-            df_test["time"] = pd.to_datetime(df_test["timestamp"],unit='s')
-            df_test.rename(columns={"close":"Price in USD"},inplace=True)
-
-             # Show graph Pepe Cash
-            k2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Pepe Cash</h1>", unsafe_allow_html=True)
-            fig = plt.figure()
-            plt.plot('time','Price in USD',data = df_test, color = "green")
-            with k2:
-                fig_html = mpld3.fig_to_html(fig)
-                components.html(fig_html, height=650, width=650)
-
-            # Show graph Rare Pepe
-            dataframe = "df_unweighted_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
-            df = pd.read_csv("03_output_data/" +dataframe)
-            k1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
-            df = df.loc[df['Price_Level'] != 0]
-            df["time"] = pd.to_datetime(df["Date_Index"])
-            df['Price_Level'] = df['Price_Level'].div(df['Price_Level'].iat[0])
-
-            fig_1 = plt.figure()
-            plt.plot('time','Price_Level',data = df, color = "green")
-            with k1:
-                fig_test = mpld3.fig_to_html(fig_1)
-                components.html(fig_test, height=650, width=650)
-            st.markdown("<hr/>", unsafe_allow_html=True)
-
-        if nasdaq_index == True:
-
-            nas1, nas2 = st.columns((2, 3)) 
-            nas1.subheader("Benchmark Rare Pepe Index - NASDAQ")
-            nas1.write("(Cumulative performance with 1 USD Dollar Investment)")
-            l1, l2 = st.columns((2, 2))
-
-            # Import NASDAQ data
-            df = pd.read_csv("02_input_data/" + "_nasdaq.csv")
-            df_test = df[['timestamp','close']]
-            df_test['close'] = df_test['close'].div(df_test['close'].iat[0])
-            df_test["time"] = pd.to_datetime(df_test["timestamp"],unit='s')
-            df_test.rename(columns={"close":"Price in USD"},inplace=True)
-
-             # Show graph NASDAQ
-            l2.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of NASDAQ</h1>", unsafe_allow_html=True)
-            fig = plt.figure()
-            plt.plot('time','Price in USD',data = df_test, color = "green")
-            with l2:
-                fig_html = mpld3.fig_to_html(fig)
-                components.html(fig_html, height=650, width=650)
-
-            # Show graph Rare Pepe
-            dataframe = "df_unweighted_price_level_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
-            df = pd.read_csv("03_output_data/" +dataframe)
-            l1.markdown("<h1 style='text-align: center; color: green;font-size:18px;'>Performance of Rare Pepe Index</h1>", unsafe_allow_html=True)
-            df = df.loc[df['Price_Level'] != 0]
-            df["time"] = pd.to_datetime(df["Date_Index"])
-            df['Price_Level'] = df['Price_Level'].div(df['Price_Level'].iat[0])
-
-            fig_1 = plt.figure()
-            plt.plot('time','Price_Level',data = df, color = "green")
-            with l1:
-                fig_test = mpld3.fig_to_html(fig_1)
-                components.html(fig_test, height=650, width=650)
-
-            st.markdown("<hr/>", unsafe_allow_html=True)
-
-    # Show final dataset
-    if dataset_analysis == True:
-        
-        # Filter by observation time
-        if observation_time !="All":
-            test = df_total
-            test["Year"] = df_total["Date_Index"].str.split("-").str[0]
-            test = test.loc[test['Year'] == str(observation_time)]
-            df_total_time = test
-        else:
-            df_total_time = df_total
-
-        # Show total transactions
-        st.subheader("Dataset ")
-        st.write("Number of Transactions in the Analysis: " + str(len(df_total_time)))
-        st.dataframe(df_total_time)
-        st.markdown("<hr/>", unsafe_allow_html=True)
 
     # Execution Time
     st.text("Metadata")
