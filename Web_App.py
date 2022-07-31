@@ -1147,6 +1147,7 @@ else:
         if path.is_file() == True:
             df = pd.read_csv("03_output_data/" + name_dataframe)
             df = df[['Date_Index','Price_Level']]
+            df = df.sort_values(by=["Date_Index"], ascending = False)
             e1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset</h1>", unsafe_allow_html=True)
             e1.dataframe(df, height=500)
 
@@ -1183,6 +1184,7 @@ else:
             # Show dataframe
             df = pd.read_csv("03_output_data/" + name_dataframe)
             df = df[['Date_Index','Price_Level']]
+            df = df.sort_values(by=["Date_Index"], ascending = False)
             e1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset</h1>", unsafe_allow_html=True)
             e1.dataframe(df, height=500)
             
@@ -1220,6 +1222,7 @@ else:
         if path.is_file() == True:
             df = pd.read_csv("03_output_data/" + name_dataframe)
             df = df[['Date_Index','Price_Level']]
+            df = df.sort_values(by=["Date_Index"], ascending = False)
             
             # show dataframe
             f1.markdown("<h1 style='text-align: left; color: green;font-size:18px;'>Dataset</h1>", unsafe_allow_html=True)
@@ -1290,6 +1293,7 @@ else:
             # Calculation of the market weighted price index
             df_market_cap = df_price_level_market_cap.groupby(["Date_Index"]).sum()
             df_market_cap = df_market_cap.loc[df_market_cap['Price_Level'] != 0]
+            df_market_cap = df_market_cap.sort_values(by=["Date_Index"], ascending = False)
             
             name_dataframe = "df_market_cap_nd_no_max_" + str(card_supply) + "_" + str(number_transactions) + "_" + str(card_series) + "_" + str(observation_time) + ".csv"
             df_market_cap.to_csv("03_output_data/" + name_dataframe)
